@@ -2,6 +2,7 @@ import PageNotFound from '../components/404.vue'
 import Home from '../components/Home.vue'
 import Login from '../components/Login.vue'
 import Board from '../components/Board.vue'
+import Card from '../components/Card.vue'
 
 const routes = [
   {
@@ -14,7 +15,11 @@ const routes = [
   },
   {
     path: '/board/:bid',
-    component: Board
+    component: Board,
+    children: [{
+      path: 'card/:cid',
+      component: Card
+    }]
   },
   {
     path: '*',
