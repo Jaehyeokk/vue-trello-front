@@ -4,10 +4,18 @@ import Login from '../components/Login.vue'
 import Board from '../components/Board.vue'
 import Card from '../components/Card.vue'
 
+import store from '../store'
+
+const requireAuth = (to, from, next) => {
+  const loginPath = `/login?rPath=${encodeURIComponent(to.path)}`
+  store.getters.isAuth ? next() : next(loginPath)
+}
+
 const routes = [
   {
     path: '/',
-    component: Home
+    component: Home,
+    beforeEnter: requireAuth,
   },
   {
     path: '/login',
@@ -16,6 +24,7 @@ const routes = [
   {
     path: '/board/:bid',
     component: Board,
+    beforeEnter: requireAuth,
     children: [{
       path: 'card/:cid',
       component: Card
