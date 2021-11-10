@@ -41,8 +41,10 @@ export default {
       this.ADD_CARD({
         title: inputTitle,
         listId
+      }).then(() => {
+        this.inputTitle = ''
+        this.$emit('close')
       })
-      console.log('submit@');
     },
     setupClickOutside(e) {
       if (this.$el.contains(e.target)) return 
