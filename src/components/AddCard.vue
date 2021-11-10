@@ -38,9 +38,11 @@ export default {
     ]),
     onSubmit() {
       const {inputTitle,listId} = this
+      const pos = this.newCardPos()
       this.ADD_CARD({
         title: inputTitle,
-        listId
+        listId,
+        pos
       }).then(() => {
         this.inputTitle = ''
         this.$emit('close')
@@ -49,6 +51,13 @@ export default {
     setupClickOutside(e) {
       if (this.$el.contains(e.target)) return 
       this.$emit('close')
+    },
+    newCardPos() {
+      const currentList = this.$store.state.board.lists.filter(l => l.id === this.listId)[0]
+      if (!currentList) return 65535
+      const {cards} = currentList
+      if (!cards.length) return 65535
+      return cards[cards.length -1].pos * 2
     },
   },
 }
