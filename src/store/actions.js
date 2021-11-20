@@ -5,7 +5,7 @@ const actions = {
     return api.auth.login(email, password)
       .then(({accessToken}) => commit('LOGIN', accessToken))
   },
-  ADD_BOARD (_, {title}) {
+  ADD_BOARD (ctx, {title}) {
     return api.board.create(title).then(data => data.item)
   },
   FETCH_BOARDS ({commit}) {
@@ -17,6 +17,9 @@ const actions = {
     return api.board.fetch(id).then(data => {
       commit('SET_BOARD', data.item)
     })
+  },
+  DELETE_BOARD (ctx, {id}) {
+    return api.board.destroy(id)
   },
   ADD_CARD ({state, dispatch}, {title, listId, pos}) {
     return api.card.create(title, listId, pos)
