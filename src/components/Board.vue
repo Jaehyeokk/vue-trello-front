@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import {mapState, mapActions} from 'vuex'
+import {mapState, mapMutations, mapActions} from 'vuex'
 import dragula from 'dragula'
 import 'dragula/dist/dragula.css'
 import List from './List.vue'
@@ -41,7 +41,7 @@ export default {
     ]),
   },
   created() {
-    this.fetchData()
+    this.fetchData().then(() => this.SET_THEME(this.board.bgColor))
   },
   updated() {
     if (this.dragulaCards) this.dragulaCards.destroy()
@@ -79,9 +79,12 @@ export default {
       'FETCH_BOARD',
       'UPDATE_CARD'
     ]),
+    ...mapMutations([
+      'SET_THEME'
+    ]),
     fetchData() {
       this.loading = true
-      this.FETCH_BOARD({id: this.$route.params.bid})
+      return this.FETCH_BOARD({id: this.$route.params.bid})
         .then(() => this.loading = false)
     }
   }
