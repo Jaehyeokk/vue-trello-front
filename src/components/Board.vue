@@ -4,6 +4,9 @@
       <div class="board">
         <div class="board-header">
           <span class="board-title">{{board.title}}</span>
+          <a class="board-header-btn show-menu" href="" @click.prevent="onShowSettings">
+            ... Show Menu
+          </a>
         </div>
         <div class="list-section-wrapper">
           <div class="list-section">
@@ -14,6 +17,7 @@
         </div>
       </div>
     </div>
+    <BoardSettings v-if="isShowBoardSettings"></BoardSettings>
     <router-view></router-view>
   </div>
 </template>
@@ -23,10 +27,12 @@ import {mapState, mapMutations, mapActions} from 'vuex'
 import dragula from 'dragula'
 import 'dragula/dist/dragula.css'
 import List from './List.vue'
+import BoardSettings from './BoardSettings.vue'
 
 export default {
   components: {
     List,
+    BoardSettings,
   },
   data() {
     return {
@@ -37,11 +43,13 @@ export default {
   },
   computed: {
     ...mapState([
-      'board'
+      'board',
+      'isShowBoardSettings',
     ]),
   },
   created() {
     this.fetchData().then(() => this.SET_THEME(this.board.bgColor))
+    this.SET_IS_SHOW_BOARD_SETTINGS(false)
   },
   updated() {
     if (this.dragulaCards) this.dragulaCards.destroy()
@@ -80,12 +88,16 @@ export default {
       'UPDATE_CARD'
     ]),
     ...mapMutations([
-      'SET_THEME'
+      'SET_THEME',
+      'SET_IS_SHOW_BOARD_SETTINGS',
     ]),
     fetchData() {
       this.loading = true
       return this.FETCH_BOARD({id: this.$route.params.bid})
         .then(() => this.loading = false)
+    },
+    onShowSettings() {
+      this.SET_IS_SHOW_BOARD_SETTINGS(true)
     }
   }
 }
