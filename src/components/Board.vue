@@ -14,6 +14,9 @@
             <div class="list-wrapper" v-for="list in board.lists" :key="list.pos">
               <List :data="list"></List>
             </div>
+            <div class="list-wrapper">
+              <AddList />
+            </div>
           </div>
         </div>
       </div>
@@ -29,11 +32,13 @@ import dragula from 'dragula'
 import 'dragula/dist/dragula.css'
 import List from './List.vue'
 import BoardSettings from './BoardSettings.vue'
+import AddList from './AddList.vue'
 
 export default {
   components: {
     List,
     BoardSettings,
+    AddList,
   },
   data() {
     return {
