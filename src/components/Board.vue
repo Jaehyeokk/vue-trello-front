@@ -11,7 +11,7 @@
         </div>
         <div class="list-section-wrapper">
           <div class="list-section">
-            <div class="list-wrapper" v-for="list in board.lists" :key="list.pos">
+            <div class="list-wrapper" v-for="list in board.lists" :key="list.id" :data-list-id="list.id" :data-list-pos="list.pos">
               <List :data="list"></List>
             </div>
             <div class="list-wrapper">
@@ -45,6 +45,7 @@ export default {
       bid: 0,
       loading: false,
       dragulaCards: null,
+      dragulaLists: null,
       isEditTitle: false,
       inputTitle: '',
     }
@@ -63,35 +64,8 @@ export default {
     this.SET_IS_SHOW_BOARD_SETTINGS(false)
   },
   updated() {
-    if (this.dragulaCards) this.dragulaCards.destroy()
-    this.dragulaCards = dragula([
-      ...Array.from(this.$el.querySelectorAll('.card-list'))
-    ]).on('drop', (el, wrapper) => {
-      const targetCard = {
-        id: el.dataset.cardId * 1, 
-        pos: 65535,
-      }
-      let prevCard = null
-      let nextCard = null
-      Array.from(wrapper.querySelectorAll('.card-item'))
-        .forEach((el, idx, arr) => {
-          const cardId = el.dataset.cardId * 1
-          if (targetCard.id === cardId) {
-            prevCard = idx > 0 ? {
-              id: arr[idx - 1].dataset.cardId * 1,
-              pos: arr[idx - 1].dataset.cardPos * 1,
-            } : null
-            nextCard = idx < arr.length - 1 ? {
-              id: arr[idx + 1].dataset.cardId * 1,
-              pos: arr[idx + 1].dataset.cardPos * 1,
-            } : null
-          }
-        })
-      if (!prevCard && nextCard) targetCard.pos = nextCard.pos / 2
-      else if (!nextCard && prevCard) targetCard.pos = prevCard.pos * 2
-      else if (nextCard && prevCard) targetCard.pos = (prevCard.pos + nextCard.pos) / 2
-      this.UPDATE_CARD(targetCard)
-    })
+    this.setListDragabble()
+    this.setCardDragabble()
   },
   methods: {
     ...mapMutations([
@@ -101,7 +75,8 @@ export default {
     ...mapActions([
       'FETCH_BOARD',
       'UPDATE_CARD',
-      'UPDATE_BOARD'
+      'UPDATE_BOARD',
+      'UPDATE_LIST',
     ]),
     fetchData() {
       this.loading = true
@@ -123,6 +98,71 @@ export default {
       const title = this.inputTitle
       if (title === this.board.title) return
       this.UPDATE_BOARD({id, title})
+    },
+    setCardDragabble() {
+      if (this.dragulaCards) this.dragulaCards.destroy()
+      this.dragulaCards = dragula([
+        ...Array.from(this.$el.querySelectorAll('.card-list'))
+      ]).on('drop', (el, wrapper) => {
+        const targetCard = {
+          id: el.dataset.cardId * 1, 
+          pos: 65535,
+        }
+        let prevCard = null
+        let nextCard = null
+        Array.from(wrapper.querySelectorAll('.card-item'))
+          .forEach((el, idx, arr) => {
+            const cardId = el.dataset.cardId * 1
+            if (targetCard.id === cardId) {
+              prevCard = idx > 0 ? {
+                id: arr[idx - 1].dataset.cardId * 1,
+                pos: arr[idx - 1].dataset.cardPos * 1,
+              } : null
+              nextCard = idx < arr.length - 1 ? {
+                id: arr[idx + 1].dataset.cardId * 1,
+                pos: arr[idx + 1].dataset.cardPos * 1,
+              } : null
+            }
+          })
+        if (!prevCard && nextCard) targetCard.pos = nextCard.pos / 2
+        else if (!nextCard && prevCard) targetCard.pos = prevCard.pos * 2
+        else if (nextCard && prevCard) targetCard.pos = (prevCard.pos + nextCard.pos) / 2
+        this.UPDATE_CARD(targetCard)
+      })
+    },
+    setListDragabble() {
+      const options = {
+        invalid: (el, handle) => !/^list/.test(handle.className)
+      }
+      if (this.dragulaLists) this.dragulaLists.destroy()
+      this.dragulaLists = dragula([
+        ...Array.from(this.$el.querySelectorAll('.list-section'))
+      ], options).on('drop', (el, wrapper) => {
+        const targetList = {
+          id: el.dataset.listId * 1, 
+          pos: 65535,
+        }
+        let prevList = null
+        let nextList = null
+        Array.from(wrapper.querySelectorAll('.list-wrapper'))
+          .forEach((el, idx, arr) => {
+            const listId = el.dataset.listId * 1
+            if (targetList.id === listId) {
+              prevList = idx > 0 ? {
+                id: arr[idx - 1].dataset.listId * 1,
+                pos: arr[idx - 1].dataset.listPos * 1,
+              } : null
+              nextList = idx < arr.length - 1 ? {
+                id: arr[idx + 1].dataset.listId * 1,
+                pos: arr[idx + 1].dataset.listPos * 1,
+              } : null
+            }
+          })
+        if (!prevList && nextList) targetList.pos = nextList.pos / 2
+        else if (!nextList && prevList) targetList.pos = prevList.pos * 2
+        else if (nextList && prevList) targetList.pos = (prevList.pos + nextList.pos) / 2
+        this.UPDATE_LIST(targetList)
+      })
     }
   }
 }
