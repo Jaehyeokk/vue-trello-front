@@ -28,8 +28,7 @@
 
 <script>
 import {mapState, mapMutations, mapActions} from 'vuex'
-import dragula from 'dragula'
-import 'dragula/dist/dragula.css'
+import dragger from '../utils/dragger.js'
 import List from './List.vue'
 import BoardSettings from './BoardSettings.vue'
 import AddList from './AddList.vue'
@@ -44,8 +43,8 @@ export default {
     return {
       bid: 0,
       loading: false,
-      dragulaCards: null,
-      dragulaLists: null,
+      cDragger: null,
+      lDragger: null,
       isEditTitle: false,
       inputTitle: '',
     }
@@ -100,67 +99,47 @@ export default {
       this.UPDATE_BOARD({id, title})
     },
     setCardDragabble() {
-      if (this.dragulaCards) this.dragulaCards.destroy()
-      this.dragulaCards = dragula([
-        ...Array.from(this.$el.querySelectorAll('.card-list'))
-      ]).on('drop', (el, wrapper) => {
+      if (this.cDragger) this.cDragger.destroy()
+      this.cDragger = dragger.init(Array.from(this.$el.querySelectorAll('.card-list')))
+      this.cDragger.on('drop', (el, wrapper) => {
         const targetCard = {
-          id: el.dataset.cardId * 1, 
-          pos: 65535,
+          id: el.dataset.cardId * 1,
+          pos: 65535
         }
-        let prevCard = null
-        let nextCard = null
-        Array.from(wrapper.querySelectorAll('.card-item'))
-          .forEach((el, idx, arr) => {
-            const cardId = el.dataset.cardId * 1
-            if (targetCard.id === cardId) {
-              prevCard = idx > 0 ? {
-                id: arr[idx - 1].dataset.cardId * 1,
-                pos: arr[idx - 1].dataset.cardPos * 1,
-              } : null
-              nextCard = idx < arr.length - 1 ? {
-                id: arr[idx + 1].dataset.cardId * 1,
-                pos: arr[idx + 1].dataset.cardPos * 1,
-              } : null
-            }
-          })
-        if (!prevCard && nextCard) targetCard.pos = nextCard.pos / 2
-        else if (!nextCard && prevCard) targetCard.pos = prevCard.pos * 2
-        else if (nextCard && prevCard) targetCard.pos = (prevCard.pos + nextCard.pos) / 2
+
+        const {prev, next} = dragger.sibling({
+          el,
+          candidates: Array.from(wrapper.querySelectorAll('.card-item')),
+          type: 'card'
+        })
+
+        if (!prev && next) targetCard.pos = next.pos / 2
+        else if (!next && prev) targetCard.pos = prev.pos * 2
+        else if (next && prev) targetCard.pos = (prev.pos + next.pos) / 2
         this.UPDATE_CARD(targetCard)
       })
     },
     setListDragabble() {
+      if (this.lDragger) this.lDragger.destroy()
       const options = {
         invalid: (el, handle) => !/^list/.test(handle.className)
       }
-      if (this.dragulaLists) this.dragulaLists.destroy()
-      this.dragulaLists = dragula([
-        ...Array.from(this.$el.querySelectorAll('.list-section'))
-      ], options).on('drop', (el, wrapper) => {
+      this.lDragger = dragger.init(Array.from(this.$el.querySelectorAll('.list-section')), options)
+      this.lDragger.on('drop', (el, wrapper) => {
         const targetList = {
-          id: el.dataset.listId * 1, 
-          pos: 65535,
+          id: el.dataset.listId * 1,
+          pos: 65535
         }
-        let prevList = null
-        let nextList = null
-        Array.from(wrapper.querySelectorAll('.list-wrapper'))
-          .forEach((el, idx, arr) => {
-            const listId = el.dataset.listId * 1
-            if (targetList.id === listId) {
-              prevList = idx > 0 ? {
-                id: arr[idx - 1].dataset.listId * 1,
-                pos: arr[idx - 1].dataset.listPos * 1,
-              } : null
-              nextList = idx < arr.length - 1 ? {
-                id: arr[idx + 1].dataset.listId * 1,
-                pos: arr[idx + 1].dataset.listPos * 1,
-              } : null
-            }
-          })
-        if (!prevList && nextList) targetList.pos = nextList.pos / 2
-        else if (!nextList && prevList) targetList.pos = prevList.pos * 2
-        else if (nextList && prevList) targetList.pos = (prevList.pos + nextList.pos) / 2
+
+        const {prev, next} = dragger.sibling({
+          el,
+          candidates: Array.from(wrapper.querySelectorAll('.list-wrapper')),
+          type: 'list'
+        })
+
+        if (!prev && next) targetList.pos = next.pos / 2
+        else if (!next && prev) targetList.pos = prev.pos * 2
+        else if (next && prev) targetList.pos = (prev.pos + next.pos) / 2
         this.UPDATE_LIST(targetList)
       })
     }
