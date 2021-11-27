@@ -3,6 +3,7 @@
     <div class="list-header">
       <input v-if="isEditTitle" v-model="inputTitle" class="form-control input-title" type="text" ref="inputTitle" @blur="onBlurTitle" @keyup.enter="onSubmitTitle">
       <div v-else class="list-header-title" @click="onClickTitle">{{data.title}}</div>
+      <a href="" class="delete-list-btn" @click.prevent="onDeleteList">&times;</a>
     </div>
     <div class="card-list">
       <CardItem v-for="card in data.cards" :key="card.id" :data="card" />
@@ -41,7 +42,8 @@ export default {
   },
   methods: {
     ...mapActions([
-      'UPDATE_LIST'
+      'UPDATE_LIST',
+      'DELETE_LIST'
     ]),
     onClickTitle() {
       this.isEditTitle = true
@@ -58,6 +60,10 @@ export default {
       const title = this.inputTitle
       if (title === this.data.title) return
       this.UPDATE_LIST({id, title})
+    },
+    onDeleteList() {
+      if (!window.confirm(`delete ${this.data.title} list?`)) return
+      this.DELETE_LIST({id: this.data.id})
     }
   }
 }
