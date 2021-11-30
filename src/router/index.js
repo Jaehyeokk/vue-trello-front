@@ -1,42 +1,20 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Home from '../components/Home.vue'
-import Login from '../components/Login.vue'
-import Board from '../components/Board.vue'
-import Card from '../components/Card.vue'
-import PageNotFound from '../components/404.vue'
-import store from '../store'
+import Vue from "vue";
+import VueRouter from "vue-router";
+import Home from "../views/Home.vue";
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
-const requireAuth = (to, from, next) => {
-  const loginPath = `/login?rPath=${encodeURIComponent(to.path)}`
-  store.getters.isAuth ? next() : next(loginPath)
-}
+const routes = [
+  {
+    path: "/",
+    name: "Home",
+    component: Home,
+  },
+];
 
 const router = new VueRouter({
-  mode: 'history',
-  routes: [
-    { 
-      path: '/', 
-      component: Home,
-      beforeEnter: requireAuth
-    },
-    { 
-      path: '/login', 
-      component: Login 
-    },
-    { 
-      path: '/b/:bid', 
-      component: Board,
-      beforeEnter: requireAuth,
-      children: [{ path: 'c/:cid', component: Card }] 
-    },
-    { 
-      path: '*', 
-      component: PageNotFound 
-    }
-  ]
-})
+  mode: "history",
+  routes,
+});
 
-export default router
+export default router;
