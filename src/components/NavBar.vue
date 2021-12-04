@@ -5,15 +5,27 @@
 				<router-link to="/">Vrello</router-link>
 			</h1>
 			<div class="links">
-				<router-link v-if="1" to="login">Login</router-link>
-				<a v-else href="" @click.prevent="console.log('logout')">Logout</a>
+				<router-link v-if="!isAuth" to="login">Login</router-link>
+				<a v-else href="" @click.prevent="logout">Logout</a>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
-export default {}
+import { mapGetters, mapMutations } from 'vuex'
+export default {
+	computed: {
+		...mapGetters(['isAuth']),
+	},
+	methods: {
+		...mapMutations(['LOGOUT']),
+		logout() {
+			this.LOGOUT()
+			this.$router.push('/login')
+		},
+	},
+}
 </script>
 
 <style scoped>

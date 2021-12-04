@@ -1,11 +1,39 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import * as api from '../api'
 
 Vue.use(Vuex)
 
-export default new Vuex.Store({
-	state: {},
-	mutations: {},
-	actions: {},
-	modules: {},
+const store = new Vuex.Store({
+	state: {
+		token: null,
+	},
+	getters: {
+		isAuth(state) {
+			return !!state.token
+		},
+	},
+	mutations: {
+		LOGIN(state, token) {
+			if (!token) return
+			state.token = token
+			localStorage.setItem('token', token)
+		},
+		LOGOUT(state) {
+			state.token = null
+			localStorage.removeItem('token')
+		},
+	},
+	actions: {
+		LOGIN({ commit }, { email, password }) {
+			return api.auth
+				.login(email, password)
+				.then(({ accessToken }) => commit('LOGIN', accessToken))
+		},
+	},
 })
+
+const { token } = localStorage
+store.commit('LOGIN', token)
+
+export default store

@@ -5,11 +5,11 @@
 				<div class="form-container">
 					<div class="input-wrapper">
 						<label for="">ID :</label>
-						<input type="text" placeholder="test@test.com" />
+						<input type="text" v-model="email" placeholder="test@test.com" />
 					</div>
 					<div class="input-wrapper">
 						<label for="">PW :</label>
-						<input type="text" placeholder="123123" />
+						<input type="password" v-model="password" placeholder="123123" />
 					</div>
 					<button class="submit-btn" type="submit">Submit</button>
 				</div>
@@ -19,10 +19,24 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
+	data() {
+		return {
+			email: '',
+			password: '',
+			rPath: '',
+		}
+	},
+	created() {
+		this.rPath = this.$route.query.rPath || '/'
+	},
 	methods: {
+		...mapActions(['LOGIN']),
 		onSubmit() {
-			console.log('submit')
+			this.LOGIN({ email: this.email, password: this.password }).then(() => {
+				this.$router.push(this.rPath)
+			})
 		},
 	},
 }
