@@ -7,6 +7,7 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
 	state: {
 		token: null,
+		boards: [],
 	},
 	getters: {
 		isAuth(state) {
@@ -18,10 +19,15 @@ const store = new Vuex.Store({
 			if (!token) return
 			state.token = token
 			localStorage.setItem('token', token)
+			api.setAuthInHeader(token)
 		},
 		LOGOUT(state) {
 			state.token = null
 			localStorage.removeItem('token')
+			api.setAuthInHeader(null)
+		},
+		SET_BOARDS(state, boards) {
+			state.boards = boards
 		},
 	},
 	actions: {
@@ -29,6 +35,9 @@ const store = new Vuex.Store({
 			return api.auth
 				.login(email, password)
 				.then(({ accessToken }) => commit('LOGIN', accessToken))
+		},
+		FETCH_BOARDS({ commit }) {
+			return api.board.fetch().then(({ list }) => commit('SET_BOARDS', list))
 		},
 	},
 })
