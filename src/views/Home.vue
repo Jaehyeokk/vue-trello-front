@@ -14,20 +14,25 @@
 				</router-link>
 			</li>
 			<li class="board-item board-item-new">
-				<a class="new-board-btn" href="" @click.prevent="onAddBoard"
+				<a class="new-board-btn" href="" @click.prevent="SET_IS_ADDBOARD(true)"
 					>Create new board...</a
 				>
 			</li>
 		</ul>
+		<AddBoard v-if="isAddBoard"></AddBoard>
 	</div>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import AddBoard from '@/components/Addboard.vue'
+import { mapState, mapActions, mapMutations } from 'vuex'
 export default {
 	name: 'Home',
+	components: {
+		AddBoard,
+	},
 	computed: {
-		...mapState(['boards']),
+		...mapState(['boards', 'isAddBoard']),
 	},
 	created() {
 		this.fetchData()
@@ -38,12 +43,10 @@ export default {
 		})
 	},
 	methods: {
+		...mapMutations(['SET_IS_ADDBOARD']),
 		...mapActions(['FETCH_BOARDS']),
 		fetchData() {
 			this.FETCH_BOARDS()
-		},
-		onAddBoard() {
-			alert('clicked add board')
 		},
 	},
 }
@@ -63,25 +66,26 @@ export default {
 
 .board-list {
 	display: flex;
+	flex-wrap: wrap;
 }
 
 .board-item {
-	margin-right: 15px;
+	margin: 0 15px 15px 0;
 	width: 200px;
 	height: 100px;
-	padding: 20px;
 	border: 1px solid #eee;
 	border-radius: 4px;
 	background-color: skyblue;
-	box-sizing: border-box;
 }
 
 .board-item a {
 	display: block;
 	width: 100%;
 	height: 100%;
+	padding: 20px;
 	font-weight: 700;
 	color: #fff;
+	box-sizing: border-box;
 }
 
 .board-item.board-item-new {
