@@ -10,6 +10,7 @@ const store = new Vuex.Store({
 		boards: [],
 		board: null,
 		isAddBoard: false,
+		isBoardSetting: false,
 	},
 	getters: {
 		isAuth(state) {
@@ -37,6 +38,9 @@ const store = new Vuex.Store({
 		SET_IS_ADDBOARD(state, toggle) {
 			state.isAddBoard = toggle
 		},
+		SET_IS_BOARDSETTING(state, toggle) {
+			state.isBoardSetting = toggle
+		},
 	},
 	actions: {
 		LOGIN({ commit }, { email, password }) {
@@ -52,6 +56,9 @@ const store = new Vuex.Store({
 		},
 		ADD_BOARD(ctx, { title }) {
 			return api.board.create(title).then(data => data.item)
+		},
+		DELETE_BOARD(ctx, bid) {
+			return api.board.delete(bid)
 		},
 	},
 })

@@ -2,6 +2,12 @@
 	<div class="board">
 		<div class="board-header">
 			<h2 class="board-title">{{ board.title }}</h2>
+			<a
+				class="board-setting-btn"
+				href=""
+				@click.prevent="SET_IS_BOARDSETTING(true)"
+				>Setting</a
+			>
 		</div>
 		<div class="list-section-wrapper">
 			<ul class="list-section">
@@ -10,24 +16,29 @@
 				</li>
 			</ul>
 		</div>
+		<BoardSetting v-if="isBoardSetting" />
 	</div>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapMutations, mapActions } from 'vuex'
 import List from '@/components/List.vue'
+import BoardSetting from '@/components/BoardSetting.vue'
 export default {
 	components: {
 		List,
+		BoardSetting,
 	},
 	computed: {
-		...mapState(['board']),
+		...mapState(['board', 'isBoardSetting']),
 	},
 	created() {
 		const bid = this.$route.params.bid
 		this.FETCH_BOARD(bid)
+		this.SET_IS_BOARDSETTING(false)
 	},
 	methods: {
+		...mapMutations(['SET_IS_BOARDSETTING']),
 		...mapActions(['FETCH_BOARD']),
 		onClickMenu() {
 			console.log('clicked')
@@ -38,12 +49,25 @@ export default {
 
 <style scoped>
 .board-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 	padding: 20px;
 }
 
 .board-title {
 	font-weight: 700;
 	font-size: 18px;
+}
+
+.board-setting-btn {
+	font-weight: 700;
+	font-size: 16px;
+	color: #333;
+}
+
+.board-setting-btn:hover {
+	color: #555;
 }
 
 .list-section-wrapper {

@@ -39,4 +39,7 @@ export const board = {
 	create(title) {
 		return request('post', '/boards', { title })
 	},
+	delete(bid) {
+		return request('delete', `/boards/${bid}`)
+	},
 }
