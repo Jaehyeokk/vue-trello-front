@@ -1,7 +1,16 @@
 <template>
 	<div class="board">
 		<div class="board-header">
-			<h2 class="board-title">{{ board.title }}</h2>
+			<input
+				v-if="isEditTitle"
+				v-model="inputTitle"
+				type="text"
+				ref="inputTitle"
+				@blur="onSubmitTitle"
+			/>
+			<h2 v-else class="board-title" @click="onClickTitle">
+				{{ board.title }}
+			</h2>
 			<a
 				class="board-setting-btn"
 				href=""
@@ -29,19 +38,35 @@ export default {
 		List,
 		BoardSetting,
 	},
+	data() {
+		return {
+			inputTitle: '',
+			isEditTitle: false,
+		}
+	},
 	computed: {
 		...mapState(['board', 'isBoardSetting']),
 	},
 	created() {
 		const bid = this.$route.params.bid
-		this.FETCH_BOARD(bid)
+		this.FETCH_BOARD(bid).then(() => (this.inputTitle = this.board.title))
 		this.SET_IS_BOARDSETTING(false)
 	},
 	methods: {
 		...mapMutations(['SET_IS_BOARDSETTING']),
-		...mapActions(['FETCH_BOARD']),
-		onClickMenu() {
-			console.log('clicked')
+		...mapActions(['FETCH_BOARD', 'UPDATE_BOARD']),
+		onClickTitle() {
+			this.isEditTitle = true
+			this.$nextTick(() => this.$refs.inputTitle.focus())
+		},
+		onSubmitTitle() {
+			this.isEditTitle = false
+			this.inputTitle = this.inputTitle.trim()
+			if (!this.inputTitle) return
+			const bid = this.board.id
+			const title = this.inputTitle
+			if (title === this.board.title) return
+			this.UPDATE_BOARD({ bid, title })
 		},
 	},
 }

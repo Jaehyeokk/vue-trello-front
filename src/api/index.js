@@ -42,4 +42,7 @@ export const board = {
 	delete(bid) {
 		return request('delete', `/boards/${bid}`)
 	},
+	update(bid, payload) {
+		return request('put', `/boards/${bid}`, payload)
+	},
 }

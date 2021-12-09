@@ -57,6 +57,11 @@ const store = new Vuex.Store({
 		ADD_BOARD(ctx, { title }) {
 			return api.board.create(title).then(data => data.item)
 		},
+		UPDATE_BOARD({ dispatch }, { bid, title, bgColor }) {
+			return api.board
+				.update(bid, { title, bgColor })
+				.then(() => dispatch('FETCH_BOARD', bid))
+		},
 		DELETE_BOARD(ctx, bid) {
 			return api.board.delete(bid)
 		},
