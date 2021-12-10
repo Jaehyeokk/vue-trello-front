@@ -6,8 +6,33 @@
 		</div>
 		<div class="board-setting-menu">
 			<ul class="board-setting-list">
-				<li>
+				<li class="board-setting-item">
 					<a href="" @click.prevent="onDelete">Delete Board</a>
+				</li>
+				<li class="board-setting-item">
+					<p class="setting-name">Change background</p>
+					<div class="color-picker">
+						<a
+							href=""
+							data-value="rgb(0, 121, 191)"
+							@click.prevent="onChangeBgColor"
+						></a>
+						<a
+							href=""
+							data-value="rgb(210, 144, 52)"
+							@click.prevent="onChangeBgColor"
+						></a>
+						<a
+							href=""
+							data-value="rgb(81, 152, 57)"
+							@click.prevent="onChangeBgColor"
+						></a>
+						<a
+							href=""
+							data-value="rgb(176, 70, 50)"
+							@click.prevent="onChangeBgColor"
+						></a>
+					</div>
 				</li>
 			</ul>
 		</div>
@@ -20,9 +45,15 @@ export default {
 	computed: {
 		...mapState(['board']),
 	},
+	mounted() {
+		this.$el.querySelectorAll('.color-picker a').forEach(el => {
+			console.log(el)
+			el.style.background = el.dataset.value
+		})
+	},
 	methods: {
-		...mapMutations(['SET_IS_BOARDSETTING']),
-		...mapActions(['DELETE_BOARD']),
+		...mapMutations(['SET_IS_BOARDSETTING', 'SET_THEME']),
+		...mapActions(['UPDATE_BOARD', 'DELETE_BOARD']),
 		onClose() {
 			this.SET_IS_BOARDSETTING(false)
 		},
@@ -33,6 +64,11 @@ export default {
 				this.onClose()
 				this.$router.push('/')
 			})
+		},
+		onChangeBgColor(e) {
+			const bid = this.board.id
+			const bgColor = e.target.dataset.value
+			this.UPDATE_BOARD({ bid, bgColor }).then(() => this.SET_THEME(bgColor))
 		},
 	},
 }
@@ -58,5 +94,22 @@ export default {
 
 .board-setting-header .close-btn {
 	font-size: 24px;
+}
+
+.board-setting-item {
+	margin-top: 20px;
+}
+
+.color-picker {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-around;
+}
+
+.color-picker a {
+	width: 120px;
+	height: 120px;
+	margin-top: 10px;
+	background-color: #aaa;
 }
 </style>

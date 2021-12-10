@@ -7,6 +7,7 @@
 				type="text"
 				ref="inputTitle"
 				@blur="onSubmitTitle"
+				@keyup.enter="onSubmitTitle"
 			/>
 			<h2 v-else class="board-title" @click="onClickTitle">
 				{{ board.title }}
@@ -49,11 +50,13 @@ export default {
 	},
 	created() {
 		const bid = this.$route.params.bid
-		this.FETCH_BOARD(bid).then(() => (this.inputTitle = this.board.title))
+		this.FETCH_BOARD(bid)
+			.then(() => (this.inputTitle = this.board.title))
+			.then(() => this.SET_THEME(this.board.bgColor))
 		this.SET_IS_BOARDSETTING(false)
 	},
 	methods: {
-		...mapMutations(['SET_IS_BOARDSETTING']),
+		...mapMutations(['SET_IS_BOARDSETTING', 'SET_THEME']),
 		...mapActions(['FETCH_BOARD', 'UPDATE_BOARD']),
 		onClickTitle() {
 			this.isEditTitle = true

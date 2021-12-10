@@ -11,6 +11,8 @@ const store = new Vuex.Store({
 		board: null,
 		isAddBoard: false,
 		isBoardSetting: false,
+		bodyColor: '#ffffff',
+		navbarColor: '#026aa7',
 	},
 	getters: {
 		isAuth(state) {
@@ -40,6 +42,10 @@ const store = new Vuex.Store({
 		},
 		SET_IS_BOARDSETTING(state, toggle) {
 			state.isBoardSetting = toggle
+		},
+		SET_THEME(state, color) {
+			state.bodyColor = color || '#ffffff'
+			state.navbarColor = color ? 'rgba(0,0,0,.15)' : '#026aa7'
 		},
 	},
 	actions: {
