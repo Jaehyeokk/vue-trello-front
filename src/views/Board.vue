@@ -24,6 +24,9 @@
 				<li class="list-wrapper" v-for="list in board.lists" :key="list.id">
 					<List :data="list"></List>
 				</li>
+				<li class="list-wrapper add-list-wrapper">
+					<AddList></AddList>
+				</li>
 			</ul>
 		</div>
 		<BoardSetting v-if="isBoardSetting" />
@@ -33,10 +36,12 @@
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex'
 import List from '@/components/List.vue'
+import AddList from '@/components/AddList.vue'
 import BoardSetting from '@/components/BoardSetting.vue'
 export default {
 	components: {
 		List,
+		AddList,
 		BoardSetting,
 	},
 	data() {
@@ -104,15 +109,20 @@ export default {
 
 .list-section {
 	display: flex;
+	flex-direction: ;
 }
 
 .list-wrapper {
-	width: 260px;
-	min-height: 200px;
+	min-width: 260px;
 	padding: 20px;
 	margin-right: 15px;
 	border: 1px solid #eee;
 	border-radius: 5px;
 	background-color: skyblue;
+}
+
+.list-wrapper.add-list-wrapper {
+	height: 20px;
+	box-sizing: border-box;
 }
 </style>

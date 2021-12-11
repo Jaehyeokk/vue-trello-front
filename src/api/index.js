@@ -46,3 +46,9 @@ export const board = {
 		return request('put', `/boards/${bid}`, payload)
 	},
 }
+
+export const list = {
+	create(payload) {
+		return request('post', '/lists', payload)
+	},
+}

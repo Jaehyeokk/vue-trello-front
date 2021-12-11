@@ -71,6 +71,11 @@ const store = new Vuex.Store({
 		DELETE_BOARD(ctx, bid) {
 			return api.board.delete(bid)
 		},
+		CREATE_LIST({ state, dispatch }, { title, boardId, pos }) {
+			return api.list
+				.create({ title, boardId, pos })
+				.then(() => dispatch('FETCH_BOARD', state.board.id))
+		},
 	},
 })
 
