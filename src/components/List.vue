@@ -8,6 +8,14 @@
 				<li class="card-wrapper" v-for="card in data.cards" :key="card.id">
 					<Card :data="card"></Card>
 				</li>
+				<li v-if="isAddCard">
+					<AddCard :listId="data.id"></AddCard>
+				</li>
+				<li v-else>
+					<a href="" @click.prevent="isAddCard = true">
+						&plus; Add a card...
+					</a>
+				</li>
 			</ul>
 		</div>
 	</div>
@@ -15,11 +23,21 @@
 
 <script>
 import Card from '@/components/Card.vue'
+import AddCard from '@/components/AddCard.vue'
 
 export default {
 	props: ['data'],
 	components: {
 		Card,
+		AddCard,
+	},
+	data() {
+		return {
+			isAddCard: false,
+		}
+	},
+	methods: {
+		onAddCard() {},
 	},
 }
 </script>

@@ -52,3 +52,9 @@ export const list = {
 		return request('post', '/lists', payload)
 	},
 }
+
+export const card = {
+	create(payload) {
+		return request('post', '/cards', payload)
+	},
+}

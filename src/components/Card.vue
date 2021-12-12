@@ -1,10 +1,10 @@
 <template>
-	<div class="card">Card ...</div>
+	<div class="card">{{ data.title }}</div>
 </template>
 
 <script>
 export default {
-	props: ['card'],
+	props: ['data'],
 }
 </script>
 
