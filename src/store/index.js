@@ -76,6 +76,11 @@ const store = new Vuex.Store({
 				.create({ title, boardId, pos })
 				.then(() => dispatch('FETCH_BOARD', state.board.id))
 		},
+		DELETE_LIST({ state, dispatch }, lid) {
+			return api.list
+				.delete(lid)
+				.then(() => dispatch('FETCH_BOARD', state.board.id))
+		},
 		CREATE_CARD({ state, dispatch }, { title, listId, pos }) {
 			return api.card
 				.create({ title, listId, pos })

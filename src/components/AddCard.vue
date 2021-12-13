@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<form @submit.prevent="onSubmit">
-			<input v-model="inputTitle" type="text" />
+			<input v-model="inputTitle" type="text" ref="inputTitle" />
 			<button type="submit">Add</button>
 		</form>
 	</div>
@@ -15,6 +15,9 @@ export default {
 		return {
 			inputTitle: '',
 		}
+	},
+	mounted() {
+		this.$refs.inputTitle.focus()
 	},
 	methods: {
 		...mapActions(['CREATE_CARD']),

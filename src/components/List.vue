@@ -2,6 +2,7 @@
 	<div class="list">
 		<div class="list-header">
 			<h4 class="list-title">{{ data.title }}</h4>
+			<a href="" @click.prevent="onDeleteList">&times;</a>
 		</div>
 		<div class="card-section-wrapper">
 			<ul class="card-section">
@@ -22,6 +23,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import Card from '@/components/Card.vue'
 import AddCard from '@/components/AddCard.vue'
 
@@ -37,12 +39,22 @@ export default {
 		}
 	},
 	methods: {
-		onAddCard() {},
+		...mapActions(['DELETE_LIST']),
+		onDeleteList() {
+			if (!confirm(`Are you sure to delete list ${this.data.title}`)) return
+			const lid = this.data.id
+			this.DELETE_LIST(lid)
+		},
 	},
 }
 </script>
 
 <style scoped>
+.list-header {
+	display: flex;
+	justify-content: space-between;
+}
+
 .list-title {
 	margin-bottom: 20px;
 	font-weight: 700;

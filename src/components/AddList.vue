@@ -1,7 +1,10 @@
 <template>
 	<div>
-		<input v-if="isAddList" v-model="inputTitle" @keyup.enter="onAddList" />
-		<a v-else href="" @click.prevent="isAddList = true">Add list...</a>
+		<div v-if="isAddList">
+			<input v-model="inputTitle" @keyup.enter="onSubmit" ref="inputTitle" />
+			<button @click.prevent="onSubmit">Add</button>
+		</div>
+		<a v-else href="" @click.prevent="onAddList">Add list...</a>
 	</div>
 </template>
 
@@ -20,6 +23,10 @@ export default {
 	methods: {
 		...mapActions(['CREATE_LIST']),
 		onAddList() {
+			this.isAddList = true
+			this.$nextTick(() => this.$refs.inputTitle.focus())
+		},
+		onSubmit() {
 			const title = this.inputTitle
 			const boardId = this.board.id
 			const pos = 65535
