@@ -60,4 +60,7 @@ export const card = {
 	create(payload) {
 		return request('post', '/cards', payload)
 	},
+	delete(cid) {
+		return request('delete', `/cards/${cid}`)
+	},
 }
