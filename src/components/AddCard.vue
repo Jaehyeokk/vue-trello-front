@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<form @submit.prevent="onSubmit">
-			<input v-model="inputTitle" type="text" ref="inputTitle" />
+			<input v-model="inputTitle" type="text" ref="inputTitle" @blur="clear" />
 			<button type="submit">Add</button>
 		</form>
 	</div>
@@ -25,7 +25,11 @@ export default {
 			const title = this.inputTitle
 			const listId = this.listId
 			const pos = 65535
-			this.CREATE_CARD({ title, listId, pos })
+			this.CREATE_CARD({ title, listId, pos }).then(() => this.clear())
+		},
+		clear() {
+			this.inputTitle = ''
+			this.$emit('@closeAddCard')
 		},
 	},
 }

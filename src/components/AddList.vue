@@ -1,7 +1,12 @@
 <template>
 	<div>
 		<div v-if="isAddList">
-			<input v-model="inputTitle" @keyup.enter="onSubmit" ref="inputTitle" />
+			<input
+				v-model="inputTitle"
+				@keyup.enter="onSubmit"
+				@blur="clear"
+				ref="inputTitle"
+			/>
 			<button @click.prevent="onSubmit">Add</button>
 		</div>
 		<a v-else href="" @click.prevent="onAddList">Add list...</a>
@@ -31,9 +36,12 @@ export default {
 			const boardId = this.board.id
 			const pos = 65535
 			this.CREATE_LIST({ title, boardId, pos }).then(() => {
-				this.inputTitle = ''
-				this.isAddList = false
+				this.clear()
 			})
+		},
+		clear() {
+			this.inputTitle = ''
+			this.isAddList = false
 		},
 	},
 }
