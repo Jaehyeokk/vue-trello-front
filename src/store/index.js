@@ -8,6 +8,7 @@ const store = new Vuex.Store({
 	state: {
 		token: null,
 		boards: [],
+		card: null,
 		board: null,
 		isAddBoard: false,
 		isBoardSetting: false,
@@ -42,6 +43,9 @@ const store = new Vuex.Store({
 		},
 		SET_IS_BOARDSETTING(state, toggle) {
 			state.isBoardSetting = toggle
+		},
+		SET_CARD(state, card) {
+			state.card = card
 		},
 		SET_THEME(state, color) {
 			state.bodyColor = color || '#ffffff'
@@ -85,6 +89,9 @@ const store = new Vuex.Store({
 			return api.list
 				.delete(lid)
 				.then(() => dispatch('FETCH_BOARD', state.board.id))
+		},
+		FETCH_CARD({ commit }, cid) {
+			return api.card.fetch(cid).then(({ item }) => commit('SET_CARD', item))
 		},
 		CREATE_CARD({ state, dispatch }, { title, listId, pos }) {
 			return api.card

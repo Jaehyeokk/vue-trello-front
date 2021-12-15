@@ -20,7 +20,7 @@
 		<div class="card-section-wrapper">
 			<ul class="card-section">
 				<li class="card-wrapper" v-for="card in data.cards" :key="card.id">
-					<Card :data="card"></Card>
+					<CardItem :data="card"></CardItem>
 				</li>
 				<li v-if="isAddCard">
 					<AddCard :listId="data.id" @@closeAddCard="closeAddCard"></AddCard>
@@ -37,13 +37,13 @@
 
 <script>
 import { mapActions } from 'vuex'
-import Card from '@/components/Card.vue'
+import CardItem from '@/components/CardItem.vue'
 import AddCard from '@/components/AddCard.vue'
 
 export default {
 	props: ['data'],
 	components: {
-		Card,
+		CardItem,
 		AddCard,
 	},
 	data() {

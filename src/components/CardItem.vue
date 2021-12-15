@@ -1,7 +1,10 @@
 <template>
-	<div class="card-container">
-		<div class="card">{{ data.title }}</div>
-		<a class="delete-btn" href="" @click.prevent="onDeleteCard">&times;</a>
+	<div>
+		<router-link class="card-container" :to="`${$route.path}/card/${data.id}`">
+			<div class="card">{{ data.title }}</div>
+			<a class="delete-btn" href="" @click.prevent="onDeleteCard">&times;</a>
+		</router-link>
+		<router-view></router-view>
 	</div>
 </template>
 

@@ -60,6 +60,9 @@ export const list = {
 }
 
 export const card = {
+	fetch(cid) {
+		return request('get', `/cards/${cid}`)
+	},
 	create(payload) {
 		return request('post', '/cards', payload)
 	},
