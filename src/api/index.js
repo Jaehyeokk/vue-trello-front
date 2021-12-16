@@ -51,8 +51,8 @@ export const list = {
 	create(payload) {
 		return request('post', '/lists', payload)
 	},
-	update(id, payload) {
-		return request('put', `/lists/${id}`, payload)
+	update(lid, payload) {
+		return request('put', `/lists/${lid}`, payload)
 	},
 	delete(lid) {
 		return request('delete', `/lists/${lid}`)
@@ -65,6 +65,9 @@ export const card = {
 	},
 	create(payload) {
 		return request('post', '/cards', payload)
+	},
+	update(cid, payload) {
+		return request('put', `/cards/${cid}`, payload)
 	},
 	delete(cid) {
 		return request('delete', `/cards/${cid}`)

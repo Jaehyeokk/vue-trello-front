@@ -8,8 +8,8 @@ const store = new Vuex.Store({
 	state: {
 		token: null,
 		boards: [],
-		card: null,
-		board: null,
+		card: {},
+		board: {},
 		isAddBoard: false,
 		isBoardSetting: false,
 		bodyColor: '#ffffff',
@@ -96,6 +96,11 @@ const store = new Vuex.Store({
 		CREATE_CARD({ state, dispatch }, { title, listId, pos }) {
 			return api.card
 				.create({ title, listId, pos })
+				.then(() => dispatch('FETCH_BOARD', state.board.id))
+		},
+		UPDATE_CARD({ state, dispatch }, { lid, cid, title, description, pos }) {
+			return api.card
+				.update(cid, { title, description, lid, pos })
 				.then(() => dispatch('FETCH_BOARD', state.board.id))
 		},
 		DELETE_CARD({ state, dispatch }, cid) {

@@ -10,7 +10,7 @@
 				@keyup.enter="onSubmitTitle"
 			/>
 			<h2 v-else class="board-title" @click="onClickTitle">
-				{{ board.title }}
+				<!-- {{ board.title }} -->
 			</h2>
 			<a
 				class="board-setting-btn"
