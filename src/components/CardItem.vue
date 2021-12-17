@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="card-item" :data-card-id="data.id" :data-card-pos="data.pos">
 		<router-link class="card-container" :to="`${$route.path}/card/${data.id}`">
 			<div class="card">{{ data.title }}</div>
 			<a class="delete-btn" href="" @click.prevent="onDeleteCard">&times;</a>

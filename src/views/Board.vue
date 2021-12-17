@@ -35,6 +35,7 @@
 
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex'
+import dragger from '@/utils/dragger.js'
 import List from '@/components/List.vue'
 import AddList from '@/components/AddList.vue'
 import BoardSetting from '@/components/BoardSetting.vue'
@@ -48,6 +49,7 @@ export default {
 		return {
 			inputTitle: '',
 			isEditTitle: false,
+			cDragger: null,
 		}
 	},
 	computed: {
@@ -60,9 +62,12 @@ export default {
 			.then(() => this.SET_THEME(this.board.bgColor))
 		this.SET_IS_BOARDSETTING(false)
 	},
+	updated() {
+		this.setCardDragabble()
+	},
 	methods: {
 		...mapMutations(['SET_IS_BOARDSETTING', 'SET_THEME']),
-		...mapActions(['FETCH_BOARD', 'UPDATE_BOARD']),
+		...mapActions(['FETCH_BOARD', 'UPDATE_BOARD', 'UPDATE_CARD']),
 		onClickTitle() {
 			this.isEditTitle = true
 			this.$nextTick(() => this.$refs.inputTitle.focus())
@@ -75,6 +80,29 @@ export default {
 			const title = this.inputTitle
 			if (title === this.board.title) return
 			this.UPDATE_BOARD({ bid, title })
+		},
+		setCardDragabble() {
+			if (this.cDragger) this.cDragger.destroy()
+			this.cDragger = dragger.init(
+				Array.from(this.$el.querySelectorAll('.card-wrapper')),
+			)
+			this.cDragger.on('drop', (el, wrapper) => {
+				const targetCard = {
+					cid: el.dataset.cardId * 1,
+					pos: 65535,
+				}
+
+				const { prev, next } = dragger.sibling({
+					el,
+					candidates: Array.from(wrapper.querySelectorAll('.card-item')),
+					type: 'card',
+				})
+
+				if (!prev && next) targetCard.pos = next.pos / 2
+				else if (!next && prev) targetCard.pos = prev.pos * 2
+				else if (next && prev) targetCard.pos = (prev.pos + next.pos) / 2
+				this.UPDATE_CARD(targetCard)
+			})
 		},
 	},
 }
