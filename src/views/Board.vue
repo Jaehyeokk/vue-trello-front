@@ -10,7 +10,7 @@
 				@keyup.enter="onSubmitTitle"
 			/>
 			<h2 v-else class="board-title" @click="onClickTitle">
-				<!-- {{ board.title }} -->
+				{{ board.title }}
 			</h2>
 			<a
 				class="board-setting-btn"
@@ -21,7 +21,13 @@
 		</div>
 		<div class="list-section-wrapper">
 			<ul class="list-section">
-				<li class="list-wrapper" v-for="list in board.lists" :key="list.id">
+				<li
+					class="list-wrapper"
+					v-for="list in board.lists"
+					:key="list.id"
+					:data-list-id="list.id"
+					:data-list-pos="list.pos"
+				>
 					<List :data="list"></List>
 				</li>
 				<li class="list-wrapper add-list-wrapper">
@@ -50,6 +56,7 @@ export default {
 			inputTitle: '',
 			isEditTitle: false,
 			cDragger: null,
+			lDragger: null,
 		}
 	},
 	computed: {
@@ -64,10 +71,16 @@ export default {
 	},
 	updated() {
 		this.setCardDragabble()
+		this.setListDragabble()
 	},
 	methods: {
 		...mapMutations(['SET_IS_BOARDSETTING', 'SET_THEME']),
-		...mapActions(['FETCH_BOARD', 'UPDATE_BOARD', 'UPDATE_CARD']),
+		...mapActions([
+			'FETCH_BOARD',
+			'UPDATE_BOARD',
+			'UPDATE_LIST',
+			'UPDATE_CARD',
+		]),
 		onClickTitle() {
 			this.isEditTitle = true
 			this.$nextTick(() => this.$refs.inputTitle.focus())
@@ -102,6 +115,28 @@ export default {
 				else if (!next && prev) targetCard.pos = prev.pos * 2
 				else if (next && prev) targetCard.pos = (prev.pos + next.pos) / 2
 				this.UPDATE_CARD(targetCard)
+			})
+		},
+		setListDragabble() {
+			if (this.lDragger) this.lDragger.destroy()
+			this.lDragger = dragger.init(
+				Array.from(this.$el.querySelectorAll('.list-section')),
+			)
+			this.lDragger.on('drop', (el, wrapper) => {
+				const targetList = {
+					lid: el.dataset.listId * 1,
+					pos: 65535,
+				}
+
+				const { prev, next } = dragger.sibling({
+					el,
+					candidates: Array.from(wrapper.querySelectorAll('.list-wrapper')),
+					type: 'list',
+				})
+				if (!prev && next) targetList.pos = next.pos / 2
+				else if (!next && prev) targetList.pos = prev.pos * 2
+				else if (next && prev) targetList.pos = (prev.pos + next.pos) / 2
+				this.UPDATE_LIST(targetList)
 			})
 		},
 	},
