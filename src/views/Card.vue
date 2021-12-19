@@ -52,14 +52,14 @@ export default {
 		onBlurTitle() {
 			const lid = this.card.listId
 			const cid = this.card.id
-			const title = this.$refs.inputTitle.value
+			const title = this.$refs.inputTitle.value()
 			if (title === this.card.title) return
 			this.UPDATE_CARD({ lid, cid, title })
 		},
 		onBlurDesc() {
 			const lid = this.card.listId
 			const cid = this.card.id
-			const description = this.$refs.inputDesc.value
+			const description = this.$refs.inputDesc.value()
 			if (description === this.card.description) return
 			this.UPDATE_CARD({ lid, cid, description })
 		},
