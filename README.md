@@ -1,24 +1,20 @@
-# vue-trello-front
+## 🔗 Demo
 
-## Project setup
-```
-npm install
-```
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+<br />
 
-### Compiles and minifies for production
-```
-npm run build
-```
+## 🔨 Stack
 
-### Lints and fixes files
-```
-npm run lint
-```
+<img src="https://img.shields.io/badge/HTML-E34F26?style=for-the-badge&logo=html5&logoColor=white" /> <img src="https://img.shields.io/badge/CSS-1572B6?style=for-the-badge&logo=css3&logoColor=white" /> <img src="https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E" /> <img src="https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D" />
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+<br />
+
+## 🎁 Packages
+
+✔️ Vuex
+
+✔️ Vue-Router
+
+✔️ Axios
+
+✔️ Dragula
