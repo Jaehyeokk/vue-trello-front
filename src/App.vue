@@ -1,7 +1,9 @@
 <template>
 	<div id="app">
 		<NavBar></NavBar>
-		<router-view></router-view>
+		<div class="view-container">
+			<router-view></router-view>
+		</div>
 	</div>
 </template>
 
@@ -15,4 +17,21 @@ export default {
 }
 </script>
 
-<style></style>
+<style>
+@import './assets/css/reset.css';
+@import './assets/css/common.css';
+html,
+body,
+#app {
+	height: 100%;
+}
+#app {
+	display: flex;
+	flex-direction: column;
+}
+
+#app > .view-container {
+	flex-grow: 1;
+	background-color: skyblue;
+}
+</style>
