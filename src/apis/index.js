@@ -7,7 +7,11 @@ const request = (method, url, data) => {
 		method,
 		url: DOMAIN + url,
 		data,
-	}).then(result => result.data)
+	})
+		.then(result => result.data)
+		.catch(result => {
+			throw result.response
+		})
 }
 
 export const setAuthInHeader = token => {

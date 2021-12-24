@@ -16,6 +16,7 @@
 						autocomplete="off"
 					/>
 				</div>
+				<p class="error-msg">{{ error }}</p>
 				<button type="submit" class="submit-btn">Login</button>
 			</form>
 		</div>
@@ -29,7 +30,12 @@ export default {
 		return {
 			inputEmail: '',
 			inputPassword: '',
+			rPath: '',
+			error: '',
 		}
+	},
+	created() {
+		this.rPath = this.$route.query.rPath || '/'
 	},
 	methods: {
 		...mapActions(['LOGIN']),
@@ -37,7 +43,9 @@ export default {
 			this.LOGIN({
 				email: this.inputEmail,
 				password: this.inputPassword,
-			}).then(() => this.$router.push('/'))
+			})
+				.then(() => this.$router.push(this.rPath))
+				.catch(err => (this.error = err.data.error))
 		},
 	},
 }
@@ -70,6 +78,15 @@ export default {
 	display: flex;
 	justify-content: space-between;
 	margin-bottom: 10px;
+}
+
+.error-msg {
+	min-height: 14px;
+	margin-bottom: 10px;
+	text-align: center;
+	font-weight: 500;
+	font-size: 14px;
+	color: red;
 }
 
 .submit-btn {
