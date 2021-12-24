@@ -2,14 +2,19 @@
 	<div class="login-page">
 		<div class="container">
 			<h2 class="title">Login to Vrello</h2>
-			<form class="login-form">
+			<form class="login-form" @submit.prevent="onSubmit">
 				<div class="input-wrapper">
 					<label for="">E-mail</label>
-					<input type="text" placeholder="test@test.com" />
+					<input type="text" v-model="inputEmail" placeholder="test@test.com" />
 				</div>
 				<div class="input-wrapper">
 					<label for="">Password</label>
-					<input type="password" placeholder="123123" />
+					<input
+						type="password"
+						v-model="inputPassword"
+						placeholder="123123"
+						autocomplete="off"
+					/>
 				</div>
 				<button type="submit" class="submit-btn">Login</button>
 			</form>
@@ -18,7 +23,24 @@
 </template>
 
 <script>
-export default {}
+import { mapActions } from 'vuex'
+export default {
+	data() {
+		return {
+			inputEmail: '',
+			inputPassword: '',
+		}
+	},
+	methods: {
+		...mapActions(['LOGIN']),
+		onSubmit() {
+			this.LOGIN({
+				email: this.inputEmail,
+				password: this.inputPassword,
+			}).then(() => this.$router.push('/'))
+		},
+	},
+}
 </script>
 
 <style scoped>

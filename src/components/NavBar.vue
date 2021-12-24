@@ -7,17 +7,23 @@
 			<router-link v-if="!isAuth" class="auth-btn" to="/login"
 				>Login</router-link
 			>
-			<router-link v-else class="auth-btn" to="/login">Logout</router-link>
+			<a v-else class="auth-btn" href="" @click.prevent="logout">Logout</a>
 		</div>
 	</div>
 </template>
 
 <script>
+import { mapGetters, mapMutations } from 'vuex'
 export default {
-	data() {
-		return {
-			isAuth: false,
-		}
+	computed: {
+		...mapGetters(['isAuth']),
+	},
+	methods: {
+		...mapMutations(['LOGOUT']),
+		logout() {
+			this.LOGOUT()
+			this.$router.push('/login')
+		},
 	},
 }
 </script>
