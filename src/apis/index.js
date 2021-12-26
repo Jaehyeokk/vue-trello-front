@@ -25,3 +25,12 @@ export const auth = {
 		return request('post', '/login', data)
 	},
 }
+
+export const board = {
+	fetch() {
+		return request('get', '/boards')
+	},
+	create(data) {
+		return request('post', '/boards', data)
+	},
+}
