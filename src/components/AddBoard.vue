@@ -42,7 +42,9 @@ export default {
 		onSubmit() {
 			const inputTitle = this.inputTitle.trim()
 			if (inputTitle === '') return
-			this.CREATE_BOARD({ title: inputTitle }).then(() => this.close())
+			this.CREATE_BOARD({ title: inputTitle }).then(data =>
+				this.$router.push(`/b/${data.id}`),
+			)
 		},
 	},
 }

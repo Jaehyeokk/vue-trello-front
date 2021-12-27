@@ -27,8 +27,8 @@ export const auth = {
 }
 
 export const board = {
-	fetch() {
-		return request('get', '/boards')
+	fetch(bid) {
+		return bid ? request('get', `/boards/${bid}`) : request('get', '/boards')
 	},
 	create(data) {
 		return request('post', '/boards', data)

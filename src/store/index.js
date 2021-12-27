@@ -8,6 +8,7 @@ const store = new Vuex.Store({
 	state: {
 		token: null,
 		boards: [],
+		board: {},
 	},
 	getters: {
 		isAuth(state) {
@@ -26,8 +27,11 @@ const store = new Vuex.Store({
 			localStorage.removeItem('token')
 			api.setAuthInHeader(null)
 		},
-		SET_BOARDS(state, boards) {
-			state.boards = boards
+		SET_BOARDS(state, list) {
+			state.boards = list
+		},
+		SET_BOARD(state, item) {
+			state.board = item
 		},
 	},
 	actions: {
@@ -39,8 +43,14 @@ const store = new Vuex.Store({
 		FETCH_BOARDS({ commit }) {
 			return api.board.fetch().then(({ list }) => commit('SET_BOARDS', list))
 		},
+		FETCH_BOARD({ commit }, bid) {
+			return api.board.fetch(bid).then(({ item }) => commit('SET_BOARD', item))
+		},
 		CREATE_BOARD({ dispatch }, data) {
-			return api.board.create(data).then(() => dispatch('FETCH_BOARDS'))
+			return api.board.create(data).then(({ item }) => {
+				dispatch('FETCH_BOARDS')
+				return item
+			})
 		},
 	},
 })
