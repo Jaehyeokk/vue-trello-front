@@ -52,6 +52,21 @@ const store = new Vuex.Store({
 				return item
 			})
 		},
+		CREATE_LIST({ state, dispatch }, data) {
+			return api.list
+				.create(data)
+				.then(() => dispatch('FETCH_BOARD', state.board.id))
+		},
+		UPDATE_LIST({ state, dispatch }, data) {
+			return api.list
+				.update(data)
+				.then(() => dispatch('FETCH_BOARD', state.board.id))
+		},
+		DELETE_LIST({ state, dispatch }, lid) {
+			return api.list
+				.delete(lid)
+				.then(() => dispatch('FETCH_BOARD', state.board.id))
+		},
 	},
 })
 

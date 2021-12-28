@@ -4,17 +4,15 @@
 			<h2 class="board-title">{{ board.title }}</h2>
 		</div>
 		<div class="list-container">
-			<ul class="list-wrapper">
+			<div class="list-wrapper">
 				<ListItem
 					v-for="list in board.lists"
 					:key="list.id"
 					:data="list"
 					class="list-item"
 				></ListItem>
-				<a href="" @click.prevent="onAddList" class="list-item add-list"
-					>Add List...</a
-				>
-			</ul>
+				<AddList class="list-item add-list"></AddList>
+			</div>
 		</div>
 		<router-view></router-view>
 	</div>
@@ -23,9 +21,11 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 import ListItem from '@/components/ListItem.vue'
+import AddList from '@/components/AddList.vue'
 export default {
 	components: {
 		ListItem,
+		AddList,
 	},
 	computed: {
 		...mapState(['board']),
@@ -36,9 +36,6 @@ export default {
 	},
 	methods: {
 		...mapActions(['FETCH_BOARD']),
-		onAddList() {
-			console.log('onAddList')
-		},
 	},
 }
 </script>
@@ -82,14 +79,7 @@ export default {
 .list-item:last-child {
 	margin-right: 0;
 }
-.add-list {
+.add-list a {
 	height: fit-content;
-	font-weight: 700;
-	text-decoration: none;
-	color: #333;
-}
-.add-list:focus,
-.add-list:hover {
-	opacity: 0.8;
 }
 </style>

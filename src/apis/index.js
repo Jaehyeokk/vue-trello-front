@@ -34,3 +34,15 @@ export const board = {
 		return request('post', '/boards', data)
 	},
 }
+
+export const list = {
+	create(data) {
+		return request('post', '/lists', data)
+	},
+	update({ lid, title }) {
+		return request('put', `/lists/${lid}`, { title })
+	},
+	delete(lid) {
+		return request('delete', `/lists/${lid}`)
+	},
+}
