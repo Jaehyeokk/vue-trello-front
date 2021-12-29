@@ -9,6 +9,7 @@ const store = new Vuex.Store({
 		token: null,
 		boards: [],
 		board: {},
+		card: {},
 	},
 	getters: {
 		isAuth(state) {
@@ -32,6 +33,9 @@ const store = new Vuex.Store({
 		},
 		SET_BOARD(state, item) {
 			state.board = item
+		},
+		SET_CARD(state, data) {
+			state.card = data
 		},
 	},
 	actions: {
@@ -65,6 +69,24 @@ const store = new Vuex.Store({
 		DELETE_LIST({ state, dispatch }, lid) {
 			return api.list
 				.delete(lid)
+				.then(() => dispatch('FETCH_BOARD', state.board.id))
+		},
+		FETCH_CARD({ commit }, cid) {
+			return api.card.fetch(cid).then(({ item }) => commit('SET_CARD', item))
+		},
+		CREATE_CARD({ state, dispatch }, data) {
+			return api.card
+				.create(data)
+				.then(() => dispatch('FETCH_BOARD', state.board.id))
+		},
+		UPDATE_CARD({ state, dispatch }, { cid, data }) {
+			return api.card
+				.update({ cid, data })
+				.then(() => dispatch('FETCH_BOARD', state.board.id))
+		},
+		DELETE_CARD({ state, dispatch }, cid) {
+			return api.card
+				.delete(cid)
 				.then(() => dispatch('FETCH_BOARD', state.board.id))
 		},
 	},

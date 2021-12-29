@@ -46,3 +46,18 @@ export const list = {
 		return request('delete', `/lists/${lid}`)
 	},
 }
+
+export const card = {
+	fetch(cid) {
+		return request('get', `/cards/${cid}`)
+	},
+	create(data) {
+		return request('post', '/cards', data)
+	},
+	update({ cid, data }) {
+		return request('put', `/cards/${cid}`, data)
+	},
+	delete(cid) {
+		return request('delete', `/cards/${cid}`)
+	},
+}

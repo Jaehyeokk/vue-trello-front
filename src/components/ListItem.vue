@@ -17,19 +17,19 @@
 			<div class="card-wrapper" v-for="card in data.cards" :key="card.id">
 				<CardItem :data="card"></CardItem>
 			</div>
+			<AddCard :list="data"></AddCard>
 		</div>
-		<a href="" class="add-card-btn" @click.prevent="onAddCard"
-			>&plus; Add Card...</a
-		>
 	</div>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
+import AddCard from '@/components/AddCard.vue'
 import CardItem from '@/components/CardItem.vue'
 export default {
 	props: ['data'],
 	components: {
+		AddCard,
 		CardItem,
 	},
 	data() {
@@ -40,9 +40,6 @@ export default {
 	},
 	methods: {
 		...mapActions(['UPDATE_LIST', 'DELETE_LIST']),
-		onAddCard() {
-			console.log('onAddCard')
-		},
 		onEditList() {
 			this.isEditList = true
 			this.$nextTick(() => this.$refs.inputTitle.focus())
@@ -86,20 +83,6 @@ export default {
 }
 .list-title {
 	font-weight: 700;
-}
-.add-card-btn {
-	display: inline-block;
-	width: 100%;
-	padding: 10px 10px;
-	margin-top: 10px;
-	font-weight: 700;
-	font-size: 14px;
-	color: #777;
-	text-decoration: none;
-}
-.add-card-btn:focus,
-.add-card-btn:hover {
-	opacity: 0.8;
 }
 input {
 	padding: 6px 16px;
