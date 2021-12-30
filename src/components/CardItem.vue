@@ -1,5 +1,9 @@
 <template>
-	<div class="card-item-wrapper">
+	<div
+		class="card-item-wrapper"
+		:data-card-id="data.id"
+		:data-card-pos="data.pos"
+	>
 		<router-link :to="`/b/${bid}/c/${cid}`" class="card-item">{{
 			data.title
 		}}</router-link>

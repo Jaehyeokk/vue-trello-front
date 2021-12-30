@@ -37,6 +37,7 @@
 
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex'
+import dragger from '@/utils/dragger.js'
 import ListItem from '@/components/ListItem.vue'
 import AddList from '@/components/AddList.vue'
 import BoardSetting from '@/components/BoardSetting.vue'
@@ -51,6 +52,7 @@ export default {
 			isBoardSetting: false,
 			isInputTitle: false,
 			inputTitle: '',
+			cDragger: null,
 		}
 	},
 	computed: {
@@ -66,9 +68,12 @@ export default {
 			this.SET_THEME(this.board.bgColor)
 		})
 	},
+	updated() {
+		this.setCardDragger()
+	},
 	methods: {
 		...mapMutations(['SET_THEME']),
-		...mapActions(['FETCH_BOARD', 'UPDATE_BOARD']),
+		...mapActions(['FETCH_BOARD', 'UPDATE_BOARD', 'UPDATE_CARD']),
 		onBoardSetting(toggle) {
 			this.isBoardSetting = toggle
 		},
@@ -85,6 +90,27 @@ export default {
 				title: inputTitle,
 			}
 			this.UPDATE_BOARD({ bid, data }).then(() => (this.isInputTitle = false))
+		},
+		setCardDragger() {
+			if (this.cDragger) this.cDragger.destroy()
+			const containers = Array.from(this.$el.querySelectorAll('.card-wrapper'))
+			this.cDragger = dragger.init(containers)
+			this.cDragger.on('drop', (el, wrapper) => {
+				const cid = el.dataset.cardId * 1
+				const data = {
+					pos: 63353,
+				}
+				const { prev, next } = dragger.sibling({
+					el,
+					candidates: Array.from(
+						wrapper.querySelectorAll('.card-item-wrapper'),
+					),
+				})
+				if (!prev && next) data.pos = next.pos / 2
+				else if (!next && prev) data.pos = prev.pos * 2
+				else if (next && prev) data.pos = (prev.pos + next.pos) * 2
+				this.UPDATE_CARD({ cid, data })
+			})
 		},
 	},
 }
