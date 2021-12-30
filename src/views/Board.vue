@@ -1,7 +1,20 @@
 <template>
 	<div class="board-container">
-		<div class="board-header">
-			<h2 class="board-title">{{ board.title }}</h2>
+		<div v-if="!isInputTitle" class="board-header">
+			<h2 class="board-title" @click.prevent="onInputTitle">
+				{{ board.title }}
+			</h2>
+			<a href="" class="setting-btn" @click.prevent="onBoardSetting(true)"
+				>Setting</a
+			>
+		</div>
+		<div class="board-header" v-else>
+			<input
+				type="text"
+				v-model="inputTitle"
+				ref="inputTitle"
+				@blur="onSubmit"
+			/>
 		</div>
 		<div class="list-container">
 			<div class="list-wrapper">
@@ -14,28 +27,65 @@
 				<AddList class="list-item add-list"></AddList>
 			</div>
 		</div>
+		<BoardSetting
+			v-if="isBoardSetting"
+			@@close="onBoardSetting(false)"
+		></BoardSetting>
 		<router-view></router-view>
 	</div>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapMutations, mapActions } from 'vuex'
 import ListItem from '@/components/ListItem.vue'
 import AddList from '@/components/AddList.vue'
+import BoardSetting from '@/components/BoardSetting.vue'
 export default {
 	components: {
 		ListItem,
 		AddList,
+		BoardSetting,
+	},
+	data() {
+		return {
+			isBoardSetting: false,
+			isInputTitle: false,
+			inputTitle: '',
+		}
 	},
 	computed: {
 		...mapState(['board']),
+		bid() {
+			return this.$route.params.bid
+		},
 	},
 	created() {
-		const bid = this.$route.params.bid
-		this.FETCH_BOARD(bid)
+		const bid = this.bid
+		this.FETCH_BOARD(bid).then(() => {
+			this.inputTitle = this.board.title
+			this.SET_THEME(this.board.bgColor)
+		})
 	},
 	methods: {
-		...mapActions(['FETCH_BOARD']),
+		...mapMutations(['SET_THEME']),
+		...mapActions(['FETCH_BOARD', 'UPDATE_BOARD']),
+		onBoardSetting(toggle) {
+			this.isBoardSetting = toggle
+		},
+		onInputTitle() {
+			this.isInputTitle = true
+			this.$nextTick(() => this.$refs.inputTitle.focus())
+		},
+		onSubmit() {
+			const inputTitle = this.inputTitle.trim()
+			if (inputTitle === '') return (this.isInputTitle = false)
+			if (inputTitle === this.board.title) return (this.isInputTitle = false)
+			const bid = this.bid
+			const data = {
+				title: inputTitle,
+			}
+			this.UPDATE_BOARD({ bid, data }).then(() => (this.isInputTitle = false))
+		},
 	},
 }
 </script>
@@ -44,16 +94,23 @@ export default {
 .board-container {
 	display: flex;
 	flex-direction: column;
+	position: relative;
 	height: 100%;
 }
 .board-header {
-	flex: none;
+	display: flex;
 	padding: 20px;
 }
 .board-title {
 	width: 100%;
 	font-weight: 700;
 	font-size: 18px;
+}
+.setting-btn {
+	font-weight: 700;
+	font-size: 14px;
+	text-decoration: none;
+	color: #666;
 }
 .list-container {
 	flex-grow: 1;
@@ -81,5 +138,11 @@ export default {
 }
 .add-list a {
 	height: fit-content;
+}
+input {
+	padding: 6px 16px;
+	border: none;
+	border-radius: 4px;
+	outline: 2px solid skyblue;
 }
 </style>

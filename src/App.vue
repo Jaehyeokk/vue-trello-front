@@ -32,6 +32,5 @@ body,
 
 #app > .view-container {
 	flex-grow: 1;
-	background-color: skyblue;
 }
 </style>

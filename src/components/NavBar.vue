@@ -13,16 +13,31 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters, mapMutations, mapState } from 'vuex'
 export default {
 	computed: {
+		...mapState(['navColor', 'bodyColor']),
 		...mapGetters(['isAuth']),
 	},
+	watch: {
+		bodyColor() {
+			return this.updateTheme()
+		},
+	},
+	mounted() {
+		this.updateTheme()
+	},
 	methods: {
-		...mapMutations(['LOGOUT']),
+		...mapMutations(['LOGOUT', 'SET_THEME']),
 		logout() {
 			this.LOGOUT()
 			this.$router.push('/login')
+		},
+		updateTheme() {
+			const nav = document.querySelector('.nav-bar')
+			const body = document.querySelector('body')
+			nav.style.backgroundColor = this.navColor
+			body.style.backgroundColor = this.bodyColor
 		},
 	},
 }

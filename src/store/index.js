@@ -10,6 +10,8 @@ const store = new Vuex.Store({
 		boards: [],
 		board: {},
 		card: {},
+		navColor: '#026aa7',
+		bodyColor: '#ffffff',
 	},
 	getters: {
 		isAuth(state) {
@@ -37,6 +39,10 @@ const store = new Vuex.Store({
 		SET_CARD(state, data) {
 			state.card = data
 		},
+		SET_THEME(state, color) {
+			state.navColor = color ? 'rgba(0, 0, 0, .15)' : '#026aa7'
+			state.bodyColor = color || '#ffffff'
+		},
 	},
 	actions: {
 		LOGIN({ commit }, data) {
@@ -55,6 +61,14 @@ const store = new Vuex.Store({
 				dispatch('FETCH_BOARDS')
 				return item
 			})
+		},
+		UPDATE_BOARD({ state, dispatch }, { bid, data }) {
+			return api.board
+				.update({ bid, data })
+				.then(() => dispatch('FETCH_BOARD', state.board.id))
+		},
+		DELETE_BOARD({ dispatch }, bid) {
+			return api.board.delete(bid).then(() => dispatch('FETCH_BOARDS'))
 		},
 		CREATE_LIST({ state, dispatch }, data) {
 			return api.list

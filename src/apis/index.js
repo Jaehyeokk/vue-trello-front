@@ -33,6 +33,12 @@ export const board = {
 	create(data) {
 		return request('post', '/boards', data)
 	},
+	update({ bid, data }) {
+		return request('put', `/boards/${bid}`, data)
+	},
+	delete(bid) {
+		return request('delete', `/boards/${bid}`)
+	},
 }
 
 export const list = {

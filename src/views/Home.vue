@@ -3,7 +3,11 @@
 		<div class="container">
 			<ul class="board-list">
 				<li class="board-item" v-for="board in boards" :key="board.id">
-					<router-link :to="`/b/${board.id}`">{{ board.title }}</router-link>
+					<router-link
+						:to="`/b/${board.id}`"
+						:style="`background-color: ${board.bgColor}`"
+						>{{ board.title }}</router-link
+					>
 				</li>
 				<li class="board-item add-board">
 					<a href="" @click.prevent="onAddBoard">Add Board...</a>
@@ -15,7 +19,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapMutations, mapActions } from 'vuex'
 import AddBoard from '@/components/AddBoard.vue'
 export default {
 	components: {
@@ -31,8 +35,10 @@ export default {
 	},
 	created() {
 		this.FETCH_BOARDS()
+		this.SET_THEME()
 	},
 	methods: {
+		...mapMutations(['SET_THEME']),
 		...mapActions(['FETCH_BOARDS']),
 		onAddBoard() {
 			this.isAddBoard = true
