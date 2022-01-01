@@ -45,8 +45,8 @@ export const list = {
 	create(data) {
 		return request('post', '/lists', data)
 	},
-	update({ lid, title }) {
-		return request('put', `/lists/${lid}`, { title })
+	update({ lid, data }) {
+		return request('put', `/lists/${lid}`, data)
 	},
 	delete(lid) {
 		return request('delete', `/lists/${lid}`)

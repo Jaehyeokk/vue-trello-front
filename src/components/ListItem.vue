@@ -55,10 +55,13 @@ export default {
 			this.inputTitle = ''
 		},
 		onSubmit() {
-			const lid = this.data.id
 			const title = this.inputTitle.trim()
 			if (title === '') return this.onClose()
-			this.UPDATE_LIST({ lid, title }).then(() => this.onClose())
+			const lid = this.data.id
+			const data = {
+				title,
+			}
+			this.UPDATE_LIST({ lid, data }).then(() => this.onClose())
 		},
 	},
 }

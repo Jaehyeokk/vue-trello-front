@@ -5,25 +5,25 @@ const dragger = {
 	init(containers, options) {
 		return dragula([...containers], options)
 	},
-	sibling({ el, candidates }) {
-		const curId = el.dataset.cardId * 1
+	sibling({ el, candidates, type }) {
+		const curId = el.dataset[type + 'Id'] * 1
 		let prev = null
 		let next = null
 		candidates.forEach((el, idx, arr) => {
-			const id = el.dataset.cardId * 1
+			const id = el.dataset[type + 'Id'] * 1
 			if (id === curId) {
 				prev =
 					idx > 0
 						? {
-								id: arr[idx - 1].dataset.cardId * 1,
-								pos: arr[idx - 1].dataset.cardPos * 1,
+								id: arr[idx - 1].dataset[type + 'Id'] * 1,
+								pos: arr[idx - 1].dataset[type + 'Pos'] * 1,
 						  }
 						: null
 				next =
 					idx < arr.length - 1
 						? {
-								id: arr[idx + 1].dataset.carId * 1,
-								pos: arr[idx + 1].dataset.cardPos * 1,
+								id: arr[idx + 1].dataset[type + 'Id'] * 1,
+								pos: arr[idx + 1].dataset[type + 'Pos'] * 1,
 						  }
 						: null
 			}

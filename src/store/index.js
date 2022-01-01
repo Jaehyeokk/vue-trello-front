@@ -75,9 +75,9 @@ const store = new Vuex.Store({
 				.create(data)
 				.then(() => dispatch('FETCH_BOARD', state.board.id))
 		},
-		UPDATE_LIST({ state, dispatch }, data) {
+		UPDATE_LIST({ state, dispatch }, { lid, data }) {
 			return api.list
-				.update(data)
+				.update({ lid, data })
 				.then(() => dispatch('FETCH_BOARD', state.board.id))
 		},
 		DELETE_LIST({ state, dispatch }, lid) {
