@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const DOMAIN = 'http://localhost:3000'
+const DOMAIN = process.env.VUE_APP_API_URL
 
 const request = (method, url, data) => {
 	return axios({
