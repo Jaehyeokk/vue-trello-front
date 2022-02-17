@@ -45,24 +45,26 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
 import { mapState, mapMutations, mapActions } from 'vuex'
-export default {
+
+export default Vue.extend({
 	computed: {
 		...mapState(['board']),
 		bid() {
 			return this.$route.params.bid
 		},
 	},
-	mounted() {
-		this.initTheme()
-	},
+
 	methods: {
 		...mapMutations(['SET_THEME']),
 		...mapActions(['DELETE_BOARD', 'UPDATE_BOARD']),
 		initTheme() {
 			const items = Array.from(this.$el.querySelectorAll('.theme-color-item'))
-			items.forEach(item => (item.style.backgroundColor = item.dataset.value))
+			items.forEach(
+				(item: any) => (item.style.backgroundColor = item.dataset.value),
+			)
 		},
 		onClose() {
 			this.$emit('@close')
@@ -73,7 +75,7 @@ export default {
 				return
 			this.DELETE_BOARD(bid).then(() => this.$router.push('/'))
 		},
-		onChangeTheme(el) {
+		onChangeTheme(el: any) {
 			const bid = this.bid
 			const data = {
 				bgColor: el.target.dataset.value,
@@ -81,7 +83,11 @@ export default {
 			this.UPDATE_BOARD({ bid, data }).then(() => this.SET_THEME(data.bgColor))
 		},
 	},
-}
+
+	mounted() {
+		this.initTheme()
+	},
+})
 </script>
 
 <style scoped>

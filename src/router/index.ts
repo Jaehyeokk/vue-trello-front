@@ -1,13 +1,13 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import store from '@/store'
+import store from '@/store/index'
 import Home from '@/views/Home.vue'
 import PageNotFound from '@/views/PageNotFound.vue'
 import Login from '@/views/Login.vue'
 
 Vue.use(VueRouter)
 
-const requireAuth = (to, from, next) => {
+const requireAuth = (to: any, from: any, next: any) => {
 	const rPath = `/login?rPath=${encodeURIComponent(to.path)}`
 	store.getters.isAuth ? next() : next(rPath)
 }

@@ -37,18 +37,21 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
 import { mapState, mapMutations, mapActions } from 'vuex'
-import dragger from '@/utils/dragger.js'
+import dragger from '@/utils/dragger'
 import ListItem from '@/components/ListItem.vue'
 import AddList from '@/components/AddList.vue'
 import BoardSetting from '@/components/BoardSetting.vue'
-export default {
+
+export default Vue.extend({
 	components: {
 		ListItem,
 		AddList,
 		BoardSetting,
 	},
+
 	data() {
 		return {
 			isBoardSetting: false,
@@ -58,23 +61,14 @@ export default {
 			lDragger: null,
 		}
 	},
+
 	computed: {
 		...mapState(['board']),
 		bid() {
 			return this.$route.params.bid
 		},
 	},
-	created() {
-		const bid = this.bid
-		this.FETCH_BOARD(bid).then(() => {
-			this.inputTitle = this.board.title
-			this.SET_THEME(this.board.bgColor)
-		})
-	},
-	updated() {
-		this.setCardDragger()
-		this.setListDragger()
-	},
+
 	methods: {
 		...mapMutations(['SET_THEME']),
 		...mapActions([
@@ -83,12 +77,15 @@ export default {
 			'UPDATE_LIST',
 			'UPDATE_CARD',
 		]),
-		onBoardSetting(toggle) {
+		onBoardSetting(toggle: boolean): void {
 			this.isBoardSetting = toggle
 		},
-		onInputTitle() {
+		onInputTitle(): void {
 			this.isInputTitle = true
-			this.$nextTick(() => this.$refs.inputTitle.focus())
+			this.$nextTick(() => {
+				const inputTitle = this.$refs.inputTitle as HTMLInputElement
+				inputTitle.focus()
+			})
 		},
 		onSubmit() {
 			const inputTitle = this.inputTitle.trim()
@@ -100,11 +97,11 @@ export default {
 			}
 			this.UPDATE_BOARD({ bid, data }).then(() => (this.isInputTitle = false))
 		},
-		setCardDragger() {
+		setCardDragger(): void {
 			if (this.cDragger) this.cDragger.destroy()
 			const containers = Array.from(this.$el.querySelectorAll('.card-wrapper'))
 			this.cDragger = dragger.init(containers)
-			this.cDragger.on('drop', (el, wrapper) => {
+			this.cDragger.on('drop', (el: any, wrapper: any) => {
 				const cid = el.dataset.cardId * 1
 				const data = {
 					pos: 63353,
@@ -126,10 +123,10 @@ export default {
 			if (this.lDragger) this.lDragger.destroy()
 			const containers = Array.from(this.$el.querySelectorAll('.list-wrapper'))
 			const options = {
-				invalid: el => !el.classList.contains('list-item'),
+				invalid: (el: any) => !el.classList.contains('list-item'),
 			}
 			this.lDragger = dragger.init(containers, options)
-			this.lDragger.on('drop', (el, wrapper) => {
+			this.lDragger.on('drop', (el: any, wrapper: any) => {
 				const lid = el.dataset.listId * 1
 				const data = {
 					pos: 63353,
@@ -146,7 +143,20 @@ export default {
 			})
 		},
 	},
-}
+
+	created() {
+		const bid = this.bid
+		this.FETCH_BOARD(bid).then(() => {
+			this.inputTitle = this.board.title
+			this.SET_THEME(this.board.bgColor)
+		})
+	},
+
+	updated() {
+		this.setCardDragger()
+		this.setListDragger()
+	},
+})
 </script>
 
 <style scoped>

@@ -18,25 +18,26 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
 import { mapState, mapMutations, mapActions } from 'vuex'
 import AddBoard from '@/components/AddBoard.vue'
-export default {
+
+export default Vue.extend({
 	components: {
 		AddBoard,
 	},
+
 	data() {
 		return {
 			isAddBoard: false,
 		}
 	},
+
 	computed: {
 		...mapState(['boards']),
 	},
-	created() {
-		this.FETCH_BOARDS()
-		this.SET_THEME()
-	},
+
 	methods: {
 		...mapMutations(['SET_THEME']),
 		...mapActions(['FETCH_BOARDS']),
@@ -44,7 +45,12 @@ export default {
 			this.isAddBoard = true
 		},
 	},
-}
+
+	created() {
+		this.FETCH_BOARDS()
+		this.SET_THEME()
+	},
+})
 </script>
 
 <style scoped>

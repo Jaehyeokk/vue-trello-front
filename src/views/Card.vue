@@ -24,13 +24,16 @@
 	</Modal>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
 import { mapState, mapActions } from 'vuex'
 import Modal from '@/components/Modal.vue'
-export default {
+
+export default Vue.extend({
 	components: {
 		Modal,
 	},
+
 	data() {
 		return {
 			isTitleEdit: false,
@@ -39,6 +42,7 @@ export default {
 			inputDesc: '',
 		}
 	},
+
 	computed: {
 		...mapState(['card']),
 		bid() {
@@ -48,12 +52,7 @@ export default {
 			return this.$route.params.cid
 		},
 	},
-	created() {
-		this.FETCH_CARD(this.cid).then(() => {
-			this.inputTitle = this.card.title
-			this.inputDesc = this.card.description
-		})
-	},
+
 	methods: {
 		...mapActions(['FETCH_CARD', 'UPDATE_CARD']),
 		onTitleEdit() {
@@ -84,7 +83,14 @@ export default {
 			this.UPDATE_CARD({ cid, data })
 		},
 	},
-}
+
+	created() {
+		this.FETCH_CARD(this.cid).then(() => {
+			this.inputTitle = this.card.title
+			this.inputDesc = this.card.description
+		})
+	},
+})
 </script>
 
 <style scoped>

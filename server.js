@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+
 var express = require('express')
 var serveStatic = require('serve-static')
 

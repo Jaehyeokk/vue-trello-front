@@ -14,21 +14,28 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
 import { mapActions } from 'vuex'
-export default {
+
+export default Vue.extend({
 	props: ['list'],
+
 	data() {
 		return {
 			isAddCard: false,
 			inputTitle: '',
 		}
 	},
+
 	methods: {
 		...mapActions(['CREATE_CARD']),
 		onAddCard() {
 			this.isAddCard = true
-			this.$nextTick(() => this.$refs.inputTitle.focus())
+			this.$nextTick(() => {
+				const inputTitle = this.$refs.inputTitle as HTMLInputElement
+				inputTitle.focus()
+			})
 		},
 		onClose() {
 			this.isAddCard = false
@@ -43,7 +50,7 @@ export default {
 			this.CREATE_CARD({ title, listId, pos }).then(() => this.onClose())
 		},
 	},
-}
+})
 </script>
 
 <style scoped>

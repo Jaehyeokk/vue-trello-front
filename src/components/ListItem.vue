@@ -22,27 +22,35 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
 import { mapActions } from 'vuex'
 import AddCard from '@/components/AddCard.vue'
 import CardItem from '@/components/CardItem.vue'
-export default {
+
+export default Vue.extend({
 	props: ['data'],
+
 	components: {
 		AddCard,
 		CardItem,
 	},
+
 	data() {
 		return {
 			isEditList: false,
 			inputTitle: '',
 		}
 	},
+
 	methods: {
 		...mapActions(['UPDATE_LIST', 'DELETE_LIST']),
 		onEditList() {
 			this.isEditList = true
-			this.$nextTick(() => this.$refs.inputTitle.focus())
+			this.$nextTick(() => {
+				const inputTitle = this.$refs.inputTitle as HTMLInputElement
+				inputTitle.focus()
+			})
 		},
 		onDeleteList() {
 			if (!confirm(`Are you sure to delete this list '${this.data.title}'`))
@@ -64,7 +72,7 @@ export default {
 			this.UPDATE_LIST({ lid, data }).then(() => this.onClose())
 		},
 	},
-}
+})
 </script>
 
 <style scoped>
