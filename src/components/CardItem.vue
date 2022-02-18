@@ -11,27 +11,29 @@
 	</div>
 </template>
 
-<script>
-import { mapState, mapActions } from 'vuex'
-export default {
+<script lang="ts">
+import Vue from 'vue'
+
+export default Vue.extend({
 	props: ['data'],
+
 	computed: {
-		...mapState({
-			bid: state => state.board.id,
-		}),
-		cid() {
+		bid(): number {
+			return this.$store.state.board.id
+		},
+		cid(): number {
 			return this.data.id
 		},
 	},
+
 	methods: {
-		...mapActions(['DELETE_CARD']),
 		onRemove() {
 			if (!confirm(`Are you sure to delete this card '${this.data.title}'`))
 				return
-			this.DELETE_CARD(this.cid)
+			this.$store.dispatch('DELETE_CARD', this.cid.toString())
 		},
 	},
-}
+})
 </script>
 
 <style scoped>

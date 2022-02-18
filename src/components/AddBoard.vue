@@ -19,21 +19,22 @@
 	</Modal>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
 import { mapActions } from 'vuex'
 import Modal from '@/components/Modal.vue'
-export default {
+
+export default Vue.extend({
 	components: {
 		Modal,
 	},
+
 	data() {
 		return {
 			inputTitle: '',
 		}
 	},
-	mounted() {
-		this.$refs.inputTitle.focus()
-	},
+
 	methods: {
 		...mapActions(['CREATE_BOARD']),
 		close() {
@@ -42,12 +43,17 @@ export default {
 		onSubmit() {
 			const inputTitle = this.inputTitle.trim()
 			if (inputTitle === '') return
-			this.CREATE_BOARD({ title: inputTitle }).then(data =>
-				this.$router.push(`/b/${data.id}`),
+			this.CREATE_BOARD({ title: inputTitle }).then((data: any) =>
+				this.$router.push(`/b/${data.item.id}`),
 			)
 		},
 	},
-}
+
+	mounted() {
+		const inputTitle = this.$refs.inputTitle as HTMLInputElement
+		inputTitle.focus()
+	},
+})
 </script>
 
 <style scoped>

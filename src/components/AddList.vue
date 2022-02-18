@@ -15,23 +15,30 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
 import { mapState, mapActions } from 'vuex'
-export default {
+
+export default Vue.extend({
 	data() {
 		return {
 			isAddList: false,
 			inputTitle: '',
 		}
 	},
+
 	computed: {
 		...mapState(['board']),
 	},
+
 	methods: {
 		...mapActions(['CREATE_LIST']),
 		onAddList() {
 			this.isAddList = true
-			this.$nextTick(() => this.$refs.inputTitle.focus())
+			this.$nextTick(() => {
+				const inputTitle = this.$refs.inputTitle as HTMLInputElement
+				inputTitle.focus()
+			})
 		},
 		onClose() {
 			this.isAddList = false
@@ -46,7 +53,7 @@ export default {
 			this.CREATE_LIST({ title, boardId, pos }).then(() => this.onClose())
 		},
 	},
-}
+})
 </script>
 
 <style scoped>

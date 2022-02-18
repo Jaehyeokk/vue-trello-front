@@ -45,43 +45,54 @@
 	</div>
 </template>
 
-<script>
-import { mapState, mapMutations, mapActions } from 'vuex'
-export default {
+<script lang="ts">
+import Vue from 'vue'
+import { mapActions } from 'vuex'
+
+export default Vue.extend({
 	computed: {
-		...mapState(['board']),
+		board() {
+			return this.$store.state.board
+		},
 		bid() {
 			return this.$route.params.bid
 		},
 	},
-	mounted() {
-		this.initTheme()
-	},
+
 	methods: {
-		...mapMutations(['SET_THEME']),
 		...mapActions(['DELETE_BOARD', 'UPDATE_BOARD']),
 		initTheme() {
 			const items = Array.from(this.$el.querySelectorAll('.theme-color-item'))
-			items.forEach(item => (item.style.backgroundColor = item.dataset.value))
+			items.forEach(
+				(item: any) => (item.style.backgroundColor = item.dataset.value),
+			)
 		},
 		onClose() {
 			this.$emit('@close')
 		},
 		onDelete() {
-			const bid = this.$route.params.bid
+			const bid = Number(this.$route.params.bid)
 			if (!confirm(`Are you sure to delete this board '${this.board.title}'`))
 				return
-			this.DELETE_BOARD(bid).then(() => this.$router.push('/'))
+			this.$store
+				.dispatch('DELETE_BOARD', bid)
+				.then(() => this.$router.push('/'))
 		},
-		onChangeTheme(el) {
+		onChangeTheme(el: any) {
 			const bid = this.bid
 			const data = {
 				bgColor: el.target.dataset.value,
 			}
-			this.UPDATE_BOARD({ bid, data }).then(() => this.SET_THEME(data.bgColor))
+			this.$store
+				.dispatch('UPDATE_BOARD', { bid, data })
+				.then(() => this.$store.commit('SET_THEME', data.bgColor))
 		},
 	},
-}
+
+	mounted() {
+		this.initTheme()
+	},
+})
 </script>
 
 <style scoped>

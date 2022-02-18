@@ -24,23 +24,28 @@
 	</Modal>
 </template>
 
-<script>
-import { mapState, mapActions } from 'vuex'
+<script lang="ts">
+import Vue from 'vue'
 import Modal from '@/components/Modal.vue'
-export default {
+
+export default Vue.extend({
 	components: {
 		Modal,
 	},
+
 	data() {
 		return {
 			isTitleEdit: false,
 			isDescEdit: false,
 			inputTitle: '',
-			inputDesc: '',
+			inputDesc: '' as string | null,
 		}
 	},
+
 	computed: {
-		...mapState(['card']),
+		card() {
+			return this.$store.state.card
+		},
 		bid() {
 			return this.$route.params.bid
 		},
@@ -48,14 +53,8 @@ export default {
 			return this.$route.params.cid
 		},
 	},
-	created() {
-		this.FETCH_CARD(this.cid).then(() => {
-			this.inputTitle = this.card.title
-			this.inputDesc = this.card.description
-		})
-	},
+
 	methods: {
-		...mapActions(['FETCH_CARD', 'UPDATE_CARD']),
 		onTitleEdit() {
 			this.isTitleEdit = true
 		},
@@ -70,7 +69,7 @@ export default {
 				listId: this.card.listId,
 				title: inputTitle,
 			}
-			this.UPDATE_CARD({ cid, data })
+			this.$store.dispatch('UPDATE_CARD', { cid, data })
 		},
 		onSubmitDesc() {
 			if (this.inputDesc === null) return
@@ -81,10 +80,17 @@ export default {
 				listId: this.card.listId,
 				description: inputDesc,
 			}
-			this.UPDATE_CARD({ cid, data })
+			this.$store.dispatch('UPDATE_CARD', { cid, data })
 		},
 	},
-}
+
+	created() {
+		this.$store.dispatch('FETCH_CARD', this.cid).then(() => {
+			this.inputTitle = this.card.title
+			this.inputDesc = this.card.description
+		})
+	},
+})
 </script>
 
 <style scoped>

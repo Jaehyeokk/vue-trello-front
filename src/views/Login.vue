@@ -23,20 +23,20 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
 import { mapActions } from 'vuex'
-export default {
+
+export default Vue.extend({
 	data() {
 		return {
 			inputEmail: '',
 			inputPassword: '',
-			rPath: '',
+			rPath: '' as string,
 			error: '',
 		}
 	},
-	created() {
-		this.rPath = this.$route.query.rPath || '/'
-	},
+
 	methods: {
 		...mapActions(['LOGIN']),
 		onSubmit() {
@@ -45,10 +45,15 @@ export default {
 				password: this.inputPassword,
 			})
 				.then(() => this.$router.push(this.rPath))
-				.catch(err => (this.error = err.data.error))
+				.catch((err: any) => (this.error = err.data.error))
 		},
 	},
-}
+
+	created() {
+		const rPath = this.$route.query.rPath as string
+		this.rPath = rPath || '/'
+	},
+})
 </script>
 
 <style scoped>

@@ -2,8 +2,8 @@
 	<div>404 | Page Not Found</div>
 </template>
 
-<script>
-export default {}
-</script>
+<script lang="ts">
+import Vue from 'vue'
 
-<style></style>
+export default Vue.extend({})
+</script>

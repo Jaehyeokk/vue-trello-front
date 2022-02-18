@@ -12,35 +12,45 @@
 	</div>
 </template>
 
-<script>
-import { mapGetters, mapMutations, mapState } from 'vuex'
-export default {
+<script lang="ts">
+import Vue from 'vue'
+
+export default Vue.extend({
 	computed: {
-		...mapState(['navColor', 'bodyColor']),
-		...mapGetters(['isAuth']),
-	},
-	watch: {
+		navColor() {
+			return this.$store.state.navColor
+		},
 		bodyColor() {
+			return this.$store.state.bodyColor
+		},
+		isAuth() {
+			return this.$store.getters.isAuth
+		},
+	},
+
+	watch: {
+		bodyColor(): void {
 			return this.updateTheme()
 		},
 	},
-	mounted() {
-		this.updateTheme()
-	},
+
 	methods: {
-		...mapMutations(['LOGOUT', 'SET_THEME']),
 		logout() {
-			this.LOGOUT()
+			this.$store.commit('LOGOUT')
 			this.$router.push('/login')
 		},
 		updateTheme() {
-			const nav = document.querySelector('.nav-bar')
-			const body = document.querySelector('body')
+			const nav = document.querySelector('.nav-bar') as HTMLElement
+			const body = document.querySelector('body') as HTMLBodyElement
 			nav.style.backgroundColor = this.navColor
 			body.style.backgroundColor = this.bodyColor
 		},
 	},
-}
+
+	mounted() {
+		this.updateTheme()
+	},
+})
 </script>
 
 <style scoped>
