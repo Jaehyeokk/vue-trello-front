@@ -26,6 +26,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { mapActions } from 'vuex'
+import bus from '@/utils/bus'
 
 export default Vue.extend({
 	data() {
@@ -45,7 +46,10 @@ export default Vue.extend({
 				password: this.inputPassword,
 			})
 				.then(() => this.$router.push(this.rPath))
-				.catch((err: any) => (this.error = err.data.error))
+				.catch((err: any) => {
+					this.error = err.data.error
+					bus.$emit('spinner:stop')
+				})
 		},
 	},
 

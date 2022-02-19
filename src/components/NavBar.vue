@@ -37,6 +37,7 @@ export default Vue.extend({
 	methods: {
 		logout() {
 			this.$store.commit('LOGOUT')
+			this.$store.commit('SET_THEME')
 			this.$router.push('/login')
 		},
 		updateTheme() {
