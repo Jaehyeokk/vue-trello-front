@@ -1,7 +1,7 @@
 <template>
 	<div class="login-page">
 		<div class="container">
-			<h2 class="title">Login to Vrello</h2>
+			<h2 class="title">Log in to Vrello</h2>
 			<form class="login-form" @submit.prevent="onSubmit">
 				<div class="input-wrapper">
 					<label for="">E-mail</label>
@@ -62,31 +62,38 @@ export default Vue.extend({
 
 <style scoped>
 .login-page .container {
-	max-width: 320px;
+	max-width: 350px;
 	margin: 60px auto 0;
 	padding: 20px;
+	border: 1px solid #ccc;
 	border-radius: 8px;
-	background-color: #fafafa;
+	background-color: #fff;
+	box-sizing: border-box;
 }
 
 .title {
 	text-align: center;
-	margin-bottom: 30px;
+	margin: 10px 0 30px;
 	font-weight: 700;
 	font-size: 21px;
 	color: #333;
 }
 
 .login-form {
-	border: 1px solid #ccc;
-	border-radius: 4px;
 	padding: 16px;
 }
 
 .input-wrapper {
 	display: flex;
 	justify-content: space-between;
-	margin-bottom: 10px;
+	align-items: center;
+	margin: 10px;
+}
+
+.input-wrapper input {
+	padding: 6px 12px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
 }
 
 .error-msg {
@@ -100,10 +107,10 @@ export default Vue.extend({
 
 .submit-btn {
 	width: 100%;
-	padding: 4px 16px;
-	border: 1px solid #eee;
+	padding: 12px 16px;
+	border: 1px solid #fff;
 	border-radius: 4px;
-	background-color: skyblue;
+	background-color: rgb(2, 106, 167);
 	color: #fff;
 	cursor: pointer;
 }

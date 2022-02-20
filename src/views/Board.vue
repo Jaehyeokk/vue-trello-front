@@ -178,12 +178,13 @@ export default Vue.extend({
 	width: 100%;
 	font-weight: 700;
 	font-size: 18px;
+	color: #fafafa;
 }
 .setting-btn {
 	font-weight: 700;
 	font-size: 14px;
 	text-decoration: none;
-	color: #666;
+	color: #eee;
 }
 .list-container {
 	flex-grow: 1;

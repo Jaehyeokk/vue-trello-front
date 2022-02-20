@@ -85,12 +85,13 @@ export default Vue.extend({
 	border: 1px solid #ccc;
 	border-radius: 4px;
 	text-decoration: none;
-	color: #fff;
-	background-color: blue;
+	color: #333;
+	background-color: #fff;
 }
 
 .modal-footer a:hover,
 .modal-footer a:focus {
-	color: rgba(255, 255, 255, 0.8);
+	color: #444;
+	background-color: #fafafa;
 }
 </style>

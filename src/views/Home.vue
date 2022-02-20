@@ -78,7 +78,7 @@ export default Vue.extend({
 	font-size: 18px;
 	color: #fff;
 	text-decoration: none;
-	background-color: yellowgreen;
+	background-color: #ccc;
 }
 
 .board-item a:focus,
@@ -87,7 +87,15 @@ export default Vue.extend({
 }
 
 .add-board a {
-	background-color: blue;
+	background-color: #fff;
+	color: #333;
+	border: 1px solid #ccc;
+}
+
+.add-board a:focus,
+.add-board a:hover {
+	color: #444;
+	background-color: #fafafa;
 }
 
 @media screen and (max-width: 768px) {

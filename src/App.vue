@@ -5,7 +5,7 @@
 			<router-view></router-view>
 		</div>
 		<div v-if="loading" class="spinner-wrapper">
-			<RingLoader :loading="loading"></RingLoader>
+			<RingLoader :loading="loading" :color="color"></RingLoader>
 		</div>
 	</div>
 </template>
@@ -27,6 +27,7 @@ export default Vue.extend({
 	data() {
 		return {
 			loading: false,
+			color: '#026aa7',
 		}
 	},
 
