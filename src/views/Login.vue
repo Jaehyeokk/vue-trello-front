@@ -91,9 +91,15 @@ export default Vue.extend({
 }
 
 .input-wrapper input {
+	width: 150px;
 	padding: 6px 12px;
 	border: 1px solid #ccc;
 	border-radius: 4px;
+}
+
+.input-wrapper input:focus {
+	border: 1px solid #fff;
+	outline: 2px solid skyblue;
 }
 
 .error-msg {

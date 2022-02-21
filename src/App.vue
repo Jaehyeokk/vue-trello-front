@@ -27,7 +27,7 @@ export default Vue.extend({
 	data() {
 		return {
 			loading: false,
-			color: '#026aa7',
+			color: '#0079BF',
 		}
 	},
 

@@ -72,7 +72,15 @@ export default Vue.extend({
 .modal-body input {
 	width: 100%;
 	padding: 6px 16px;
+	border-radius: 4px;
+	border: none;
+	outline: 1px solid #ccc;
 	box-sizing: border-box;
+}
+
+.modal-body input:focus {
+	border: none;
+	outline: 2px solid skyblue;
 }
 
 .modal-footer {
